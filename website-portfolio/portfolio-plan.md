@@ -9,42 +9,103 @@ A minimal, clean portfolio website built with React to showcase 2-3 projects wit
 - **Framework**: React (Vite - faster and lighter than Create React App)
 - **Styling**: CSS Modules or Tailwind CSS (minimal design)
 - **Icons**: Lucide React or Heroicons
-- **Deployment**: Vercel or Netlify (recommended for React apps)
-- **Domain**: Namecheap (can connect to Vercel/Netlify)
+- **Deployment**: GitHub Pages (primary hosting solution)
+- **Domain**: Namecheap (can connect to GitHub Pages)
 
 ---
 
-## Hosting Options for Namecheap Domain
+## Hosting: GitHub Pages
 
-### Option 1: Vercel/Netlify + Namecheap DNS (Recommended)
-**Pros**: Free hosting, automatic HTTPS, continuous deployment, professional
-**Steps**:
-1. Get Vercel/Netlify deployment URL (e.g., `project.vercel.app`)
-2. In Namecheap:
-   - Go to Domain List → Click domain → Advanced DNS
-   - Add CNAME records:
-     - `www` → `your-project.vercel.app`
-     - `@` → `your-project.vercel.app`
-3. In Vercel/Netlify Dashboard:
-   - Go to Domain Management → Add custom domain
-   - Follow verification steps
-4. Wait for DNS propagation (up to 48 hours)
+### Why GitHub Pages for Your Portfolio?
+- **Free**: Completely free hosting
+- **Integrated**: Built into GitHub, no extra account needed
+- **Automatic HTTPS**: Free SSL certificate
+- **CI/CD**: Automatic deployments on push to branch
+- **Custom Domain**: Supports custom domains (with Namecheap)
+- **Perfect for Portfolios**: Static sites are ideal for portfolios
+- **Simple Setup**: Just push to a branch and enable Pages
+- **Industry Standard**: Most developer portfolios use GitHub Pages
 
-### Option 2: Namecheap EasyWeb (Static Hosting)
-**Pros**: Direct Namecheap hosting
-**Cons**: Paid plan required, manual file uploads
-**Steps**:
-1. Purchase EasyWeb hosting plan
-2. Upload `dist/` folder via FTP
-3. Point domain directly to Namecheap
+### Setup Steps
 
-### Recommendation for Entry-Level Developers
-**Use Vercel/Netlify + Namecheap DNS**:
-- Free hosting
-- Automatic HTTPS
-- Continuous deployment from GitHub
-- Professional appearance
-- Easy to manage
+1. **Create Repository on GitHub**
+   - Create a new repository (public or private)
+   - Name it `yourusername.github.io` for user site or `yourusername-project` for project site
+
+2. **Enable GitHub Pages**
+   - Go to repository Settings → Pages
+   - Select source branch (main or master)
+   - Choose folder (root or /docs)
+   - Click Save
+
+3. **Build Your React App**
+   ```bash
+   npm run build
+   ```
+   - This creates the `dist/` folder with production-ready files
+
+4. **Deploy Options**
+
+   **Option A: Manual Deploy (Simplest)**
+   - Commit your `dist/` folder to the branch
+   - GitHub Pages will serve it automatically
+
+   **Option B: GitHub Actions (Recommended)**
+   - Create `.github/workflows/deploy.yml` for automatic builds
+   - Push to trigger automatic deployment
+   - No manual build steps needed
+
+5. **Configure Custom Domain (Optional)**
+   - In Pages settings, add your custom domain
+   - In Namecheap Advanced DNS:
+     - Add CNAME: `www` → `yourusername.github.io`
+     - Add CNAME: `@` → `yourusername.github.io`
+   - Wait for DNS propagation (up to 48 hours)
+
+### Configuration Files
+
+**GitHub Actions Workflow (`.github/workflows/deploy.yml`)**:
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+```
+
+**Required Files**:
+- `.github/workflows/deploy.yml` - GitHub Actions workflow
+- `package.json` - Ensure `npm run build` script exists
+- `README.md` - Required for GitHub Pages
+
+### Important Notes
+- GitHub Pages only serves static files (HTML, CSS, JS)
+- Build your React app before deploying (`npm run build`)
+- The `dist/` folder contains the production-ready files
+- GitHub Actions can automate the build and deploy process
+- Base URL configuration may be needed for nested repositories
+
+### Troubleshooting Common Issues
+- **404 errors**: Check that `dist/` folder is built and committed
+- **Custom domain not working**: Verify DNS records at Namecheap
+- **Build errors**: Check Node.js version compatibility in `package.json`
+- **403 errors**: Ensure repository is public or you have proper permissions
 
 ---
 
@@ -177,12 +238,13 @@ src/
    - Test theme switching
    - Optimize performance
 
-7. **Deploy**
-   - Push to GitHub
-   - Connect Vercel/Netlify account
-   - Configure custom domain from Namecheap
-   - Update DNS records at Namecheap
-   - Deploy and verify
+7. **Deploy to GitHub Pages**
+   - Create GitHub repository
+   - Push code to repository
+   - Enable GitHub Pages in settings
+   - Configure GitHub Actions workflow (optional)
+   - Set up custom domain at Namecheap (optional)
+   - Verify deployment
 
 ---
 
@@ -220,6 +282,10 @@ website-portfolio/
 │   ├── index.css
 │   └── utils/
 │       └── data.js (for project data)
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+├── .gitignore
 ├── index.html
 ├── package.json
 ├── vite.config.js
@@ -315,11 +381,29 @@ graph TD
 3. Create component structure
 4. Implement each section
 5. Add your content
-6. Test and deploy
+6. Test and deploy to GitHub Pages
+
+---
+
+## GitHub Pages Deployment Checklist
+
+- [ ] Create GitHub repository
+- [ ] Push initial code to repository
+- [ ] Enable GitHub Pages in repository settings
+- [ ] Build project (`npm run build`)
+- [ ] Commit `dist/` folder or configure GitHub Actions
+- [ ] Verify Pages is accessible at `https://yourusername.github.io`
+- [ ] (Optional) Set up custom domain in Pages settings
+- [ ] (Optional) Configure DNS at Namecheap
+- [ ] (Optional) Create GitHub Actions workflow for auto-deploy
 
 ---
 
 ## Questions to Consider
+
+### Hosting Questions
+- **GitHub Pages**: Best for portfolios, integrated with GitHub, free
+- **Recommendation**: Use GitHub Pages exclusively for simplicity and integration
 
 ### Dark Mode Questions
 - Should dark mode be the default or require toggle?
