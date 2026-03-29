@@ -1,7 +1,8 @@
 # Portfolio Website Plan - GitHub Pages (Static)
 
 ## Project Overview
-A minimal, clean portfolio website built with **React + TypeScript + plain HTML/CSS** to showcase web development projects with email/social links, featuring dark mode as default. Deployed directly to GitHub Pages without any build step.
+[new content to replace with]
+A minimal, clean portfolio website built with **React + TypeScript + plain HTML/CSS** to showcase web development projects with email/social links, featuring dark mode as default. Deployed directly to GitHub Pages.
 
 **Owner:** Luke
 **GitHub:** github.com/ltv0
@@ -12,7 +13,6 @@ A minimal, clean portfolio website built with **React + TypeScript + plain HTML/
 ---
 
 ## Tech Stack
-
 
 ###  React + TypeScript + Plain HTML/CSS (Recommended)
 - **React 18+**: Component organization with TypeScript
@@ -216,16 +216,39 @@ website-portfolio/
   - Tech stack used
   - Links to live demo and code
 
-### 4. About Section
-- Personal bio
-- Skills list
-- Education/Certifications (optional)
+### 4. Skills Section
+- **Categorize skills by area**:
+  - **Frontend**: HTML5, CSS3, JavaScript (ES6+), TypeScript, React, Tailwind CSS
+  - **Backend**: Node.js, Express, Python, REST APIs, GraphQL
+  - **Database**: MongoDB, PostgreSQL, MySQL, Redis
+  - **Tools**: Git, GitHub, VS Code, npm/yarn, Docker (optional)
+  - **Testing**: Jest, React Testing Library, Cypress
+  - **DevOps**: GitHub Actions, CI/CD, AWS basics
+  - **Soft Skills**: Problem-solving, teamwork, communication
+- **Include proficiency levels**:
+  - Beginner / Intermediate / Advanced
+  - Or use a simple icon system (🟢 / 🟡 / 🔴)
+- **Add "Learning In Progress" section** to show growth mindset
 
-### 5. Contact Section
+### 5. About/Bio Section
+- **Professional summary** (3-4 sentences): Who you are, what you do, what you're passionate about
+- **Education**: Degree, university, relevant coursework
+- **Certifications**: AWS, Google, Microsoft, etc.
+- **Personal interests**: Hobbies, side projects, open source contributions
+- **Availability statement**: "Open to full-time opportunities" or "Freelance available"
+- **Example bio**:
+  ```
+  Hi, I'm Luke! I'm a passionate software developer specializing in 
+  building web applications with React and TypeScript. I love solving 
+  complex problems and creating intuitive user experiences. Currently 
+  looking for junior developer opportunities in the Denver area.
+  ```
+
+### 6. Contact Section
 - Email link
 - Social media links (GitHub, LinkedIn, Twitter, etc.)
 
-### 6. Footer
+### 7. Footer
 - Copyright
 - Simple credits
 
@@ -299,53 +322,53 @@ website-portfolio/
 
 ### React + TypeScript + Plain HTML/CSS Development
 1. **Initialize React Project with TypeScript**
-    ```bash
-    npm create vite@latest . -- --template react-ts
-    npm install
-    ```
+     ```bash
+     npm create vite@latest . -- --template react-ts
+     npm install
+     ```
 
 2. **Create React Components**
-    - `Header.tsx` - Navigation and theme toggle
-    - `Hero.tsx` - Introduction section
-    - `Projects.tsx` - Project grid
-    - `About.tsx` - About section
-    - `Contact.tsx` - Contact information
-    - `Footer.tsx` - Footer content
+     - `Header.tsx` - Navigation and theme toggle
+     - `Hero.tsx` - Introduction section
+     - `Projects.tsx` - Project grid
+     - `About.tsx` - About section
+     - `Contact.tsx` - Contact information
+     - `Footer.tsx` - Footer content
 
 3. **Create Plain CSS Styles**
-    - Define CSS variables for theming
-    - Create responsive layout
-    - Implement dark mode with CSS variables
-    - **All styles in plain CSS files** (no CSS modules)
+     - Define CSS variables for theming
+     - Create responsive layout
+     - Implement dark mode with CSS variables
+     - **All styles in plain CSS files** (no CSS modules)
 
 4. **Create TypeScript Functionality**
-    - Theme toggle logic with types
-    - Smooth scrolling with type-safe event handlers
-    - Mobile menu (if needed)
-    - **All interactivity in vanilla TypeScript** (no React hooks for DOM manipulation)
+     - Theme toggle logic with types
+     - Smooth scrolling with type-safe event handlers
+     - Mobile menu (if needed)
+     - **All interactivity in vanilla TypeScript** (no React hooks for DOM manipulation)
 
 5. **Add Content**
-    - Populate components with actual content
-    - Customize colors and fonts
-    - Add project screenshots
+     - Populate components with actual content
+     - Customize colors and fonts
+     - Add project screenshots
 
 6. **Test & Refine**
-    - Run `npm run dev` for local development
-    - Test on different devices
-    - Test theme switching
-    - Optimize images and performance
+     - Run `npm run dev` for local development
+     - Test on different devices
+     - Test theme switching
+     - Optimize images and performance
 
 7. **Build for Production**
-    ```bash
-    npm run build
-    ```
+     ```bash
+     npm run build
+     ```
 
 8. **Deploy to GitHub Pages**
-    - Copy `dist/` folder contents to repository root
-    - Create GitHub repository
-    - Push files to repository
-    - Enable GitHub Pages in settings
-    - Verify deployment
+     - Copy `dist/` folder contents to repository root
+     - Create GitHub repository
+     - Push files to repository
+     - Enable GitHub Pages in settings
+     - Verify deployment
 
 ---
 
@@ -631,6 +654,7 @@ export const projects = [
 - [ ] **Verify SSL certificate for `https://ltv0.me`**
 - [ ] (Optional) Create GitHub Actions workflow for auto-deploy
 
+
 ### React + Plain HTML/CSS/JS
 - [ ] Create React project with Vite
 - [ ] Create all components (Header, Hero, Projects, About, Contact, Footer)
@@ -644,34 +668,15 @@ export const projects = [
 - [ ] Run `npm run build` to create production build
 - [ ] Copy `dist/` folder contents to GitHub repository root
 - [ ] Push files to GitHub
-- [ ] Enable GitHub Pages in repository settings
-- [ ] Verify Pages is accessible at `https://ltv0.github.io`
-- [ ] **Set up custom domain `ltv0.me` in Pages settings**
-- [ ] **Configure DNS at Namecheap for `ltv0.me`**
+- [x] Enable GitHub Pages in repository settings
+- [x] Verify Pages is accessible at `https://ltv0.github.io`
+- [x] **Set up custom domain `ltv0.me` in Pages settings**
+- [x] **Configure DNS at Namecheap for `ltv0.me`**
 - [ ] **Verify SSL certificate for `https://ltv0.me`**
 - [ ] (Optional) Create GitHub Actions workflow for auto-deploy
 
 ---
 
-## Advantages Comparison
-
-### Vanilla HTML/CSS/JS vs React/Vite
-
-| Feature | Vanilla Site | React/Vite |
-|---------|--------------|------------|
-| Setup Time | 5 minutes | 30+ minutes |
-| Build Step | None | Required (`npm run build`) |
-| Hosting | Direct push | Build then push |
-| Performance | Excellent | Good (after build) |
-| Maintenance | Simple | More complex |
-| Learning Curve | Low | Higher |
-| GitHub Pages Ready | Yes | Requires build |
-| Component Reusability | Manual | Built-in |
-| State Management | Manual (localStorage) | React Context/Redux |
-| Hot Reload | Manual refresh | Built-in |
-| **Plain HTML/CSS/JS** | **Yes** | **Yes** |
-
----
 
 ## Questions to Consider
 
