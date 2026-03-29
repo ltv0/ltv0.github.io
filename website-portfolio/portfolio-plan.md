@@ -802,11 +802,11 @@ Your portfolio will be accessible at **`https://ltv0.me`** (and optionally `http
 
 ### Verification Checklist
 
-- [ ] DNS A records configured at Namecheap
-- [ ] CNAME record for `www.ltv0.me` configured
-- [ ] Custom domain added in GitHub Pages settings
+- [x] DNS A records configured at Namecheap
+- [x] CNAME record for `www.ltv0.me` configured
+- [x] Custom domain added in GitHub Pages settings
 - [ ] SSL certificate verified (HTTPS works)
-- [ ] Site accessible at `https://ltv0.me`
-- [ ] Site accessible at `https://www.ltv0.me`
+- [x] Site accessible at `https://ltv0.me`
+- [x] Site accessible at `https://www.ltv0.me`
 
 ---
