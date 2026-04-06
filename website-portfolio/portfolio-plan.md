@@ -596,6 +596,24 @@ const projects = [
     demoUrl: "https://example.com",
     codeUrl: "https://github.com/lukek/blog",
     image: "/images/blog.jpg"
+  },
+  {
+    id: 4,
+    title: "Weather Report",
+    description: "A simple weather app showcased on Devpost.",
+    techStack: ["HTML", "CSS", "JavaScript"],
+    demoUrl: "https://devpost.com/software/weather-report-2aew5f",
+    codeUrl: "",
+    image: "/images/weather-report.jpg"
+  },
+  {
+    id: 5,
+    title: "Blaster Hack — Commandline Game",
+    description: "A command-line game hosted on ltv0.me.",
+    techStack: ["TypeScript", "Node.js"],
+    demoUrl: "http://ltv0.me/blaster-hack-commandline-game/",
+    codeUrl: "",
+    image: "/images/blaster-commandline.jpg"
   }
 ];
 </script>
@@ -632,6 +650,25 @@ export const projects = [
     demoUrl: "https://example.com",
     codeUrl: "https://github.com/lukek/blog",
     image: "/images/blog.jpg"
+  }
+  ,
+  {
+    id: 4,
+    title: "Weather Report",
+    description: "A simple weather app showcased on Devpost.",
+    techStack: ["React", "TypeScript"],
+    demoUrl: "https://devpost.com/software/weather-report-2aew5f",
+    codeUrl: "",
+    image: "/images/weather-report.jpg"
+  },
+  {
+    id: 5,
+    title: "Blaster Hack — Commandline Game",
+    description: "A command-line game hosted on ltv0.me.",
+    techStack: ["TypeScript", "Node.js"],
+    demoUrl: "http://ltv0.me/blaster-hack-commandline-game/",
+    codeUrl: "",
+    image: "/images/blaster-commandline.jpg"
   }
 ]
 ```
