@@ -85,6 +85,7 @@ Turn this project into a fully developed portfolio website that showcases your w
   - [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
   - [Vite deployment guide](https://vitejs.dev/guide/static-deploy.html)
   - [Pretext GitHub repository](https://github.com/chenglou/pretext)
+  - [Project GitHub repository](https://github.com/ltv0/website-portfolio)
 
 ## UX and design
 - Use a dark theme with a bold accent color similar to the current site

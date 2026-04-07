@@ -11,9 +11,174 @@
       --surface: rgba(8, 18, 28, 0.92);
       --text: #f6f2df;
       --muted: #dfe7ef;
-      --accent: #7fd1ff;
-      --accent-strong: #63c1ff;
+      --accent-1: #7fd1ff;
+      --accent-2: #63c1ff;
+      --accent-3: #5ba6ff;
+      --accent-4: #4f8aec;
+      --accent-5: #3d6dd4;
+      --accent: var(--accent-1);
+      --accent-strong: var(--accent-2);
       --border: rgba(127, 209, 255, 0.18);
+      --menu-border: rgba(127, 209, 255, 0.18);
+      --header-bg: rgba(8, 18, 28, 0.75);
+      --header-border: rgba(127, 209, 255, 0.12);
+      --chip-bg: rgba(255, 255, 255, 0.03);
+      --chip-border: rgba(255, 255, 255, 0.12);
+      --card-bg: rgba(5, 12, 20, 0.72);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --timeline-line: rgba(127, 209, 255, 0.12);
+      --timeline-ring: 0 0 0 6px rgba(127, 209, 255, 0.08);
+      --text-shadow: 0 4px 18px rgba(127, 209, 255, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    :root.blue-theme {
+      --bg: #08121c;
+      --surface: rgba(8, 18, 28, 0.92);
+      --text: #f6f2df;
+      --muted: #dfe7ef;
+      --accent-1: #7fd1ff;
+      --accent-2: #63c1ff;
+      --accent-3: #5ba6ff;
+      --accent-4: #4f8aec;
+      --accent-5: #3d6dd4;
+      --accent: var(--accent-1);
+      --accent-strong: var(--accent-2);
+      --border: rgba(127, 209, 255, 0.18);
+      --menu-border: rgba(127, 209, 255, 0.18);
+      --header-bg: rgba(8, 18, 28, 0.75);
+      --header-border: rgba(127, 209, 255, 0.12);
+      --chip-bg: rgba(255, 255, 255, 0.03);
+      --chip-border: rgba(255, 255, 255, 0.12);
+      --card-bg: rgba(5, 12, 20, 0.72);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --timeline-line: rgba(127, 209, 255, 0.12);
+      --timeline-ring: 0 0 0 6px rgba(127, 209, 255, 0.08);
+      --text-shadow: 0 4px 18px rgba(127, 209, 255, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    :root.purple-theme {
+      --bg: #0d102e;
+      --surface: rgba(28, 24, 108, 0.92);
+      --text: #eef1ff;
+      --muted: #d9ddff;
+      --accent-1: #9ba7ff;
+      --accent-2: #8f8ff9;
+      --accent-3: #7f7bee;
+      --accent-4: #6d69e4;
+      --accent-5: #5560c8;
+      --accent: var(--accent-1);
+      --accent-strong: var(--accent-5);
+      --border: rgba(155, 167, 255, 0.18);
+      --menu-border: rgba(155, 167, 255, 0.18);
+      --header-bg: rgba(18, 14, 44, 0.94);
+      --header-border: rgba(110, 90, 170, 0.16);
+      --chip-bg: rgba(24, 14, 72, 0.18);
+      --chip-border: rgba(110, 90, 170, 0.24);
+      --card-bg: rgba(12, 8, 38, 0.92);
+      --card-border: rgba(110, 90, 170, 0.22);
+      --timeline-line: rgba(188, 154, 247, 0.12);
+      --timeline-ring: 0 0 0 6px rgba(188, 154, 247, 0.08);
+      --text-shadow: 0 4px 18px rgba(188, 154, 247, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    :root.red-theme {
+      --bg: #2b0a0f;
+      --surface: rgba(55, 18, 24, 0.92);
+      --text: #ffedee;
+      --muted: #f2d5d8;
+      --accent-1: #ff7b7b;
+      --accent-2: #ff9a9a;
+      --accent-3: #ff5f5f;
+      --accent-4: #e64b4b;
+      --accent-5: #b33434;
+      --accent: var(--accent-1);
+      --accent-strong: var(--accent-2);
+      --border: rgba(255, 123, 123, 0.18);
+      --menu-border: rgba(255, 123, 123, 0.18);
+      --header-bg: rgba(35, 12, 18, 0.92);
+      --header-border: rgba(255, 123, 123, 0.14);
+      --chip-bg: rgba(255, 123, 123, 0.08);
+      --chip-border: rgba(255, 123, 123, 0.22);
+      --card-bg: rgba(30, 10, 14, 0.92);
+      --card-border: rgba(255, 123, 123, 0.2);
+      --timeline-line: rgba(255, 123, 123, 0.12);
+      --timeline-ring: 0 0 0 6px rgba(255, 123, 123, 0.08);
+      --text-shadow: 0 4px 18px rgba(255, 123, 123, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    :root.orange-theme {
+      --bg: #2f1409;
+      --surface: rgba(75, 35, 10, 0.92);
+      --text: #fff3e8;
+      --muted: #f6e0c8;
+      --accent-1: #ff9a4d;
+      --accent-2: #ffb663;
+      --accent-3: #ff8d35;
+      --accent-4: #e67627;
+      --accent-5: #b85218;
+      --accent: var(--accent-1);
+      --accent-strong: var(--accent-2);
+      --border: rgba(255, 154, 77, 0.18);
+      --menu-border: rgba(255, 154, 77, 0.18);
+      --header-bg: rgba(55, 25, 14, 0.92);
+      --header-border: rgba(255, 154, 77, 0.14);
+      --chip-bg: rgba(255, 154, 77, 0.08);
+      --chip-border: rgba(255, 154, 77, 0.22);
+      --card-bg: rgba(45, 12, 8, 0.92);
+      --card-border: rgba(255, 154, 77, 0.22);
+      --timeline-line: rgba(255, 154, 77, 0.12);
+      --timeline-ring: 0 0 0 6px rgba(255, 154, 77, 0.08);
+      --text-shadow: 0 4px 18px rgba(255, 154, 77, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    :root.yellow-theme {
+      --bg: #2f2c0a;
+      --surface: rgba(80, 70, 18, 0.92);
+      --text: #fff9d4;
+      --muted: #f6efb8;
+      --accent-1: #ffe070;
+      --accent-2: #ffeb94;
+      --accent-3: #ffd142;
+      --accent-4: #e5bf34;
+      --accent-5: #b79325;
+      --accent: var(--accent-1);
+      --accent-strong: var(--accent-2);
+      --border: rgba(255, 224, 112, 0.18);
+      --menu-border: rgba(255, 224, 112, 0.18);
+      --header-bg: rgba(55, 45, 8, 0.92);
+      --header-border: rgba(255, 224, 112, 0.14);
+      --chip-bg: rgba(255, 224, 112, 0.08);
+      --chip-border: rgba(255, 224, 112, 0.22);
+      --card-bg: rgba(40, 30, 10, 0.92);
+      --card-border: rgba(255, 224, 112, 0.22);
+      --timeline-line: rgba(255, 224, 112, 0.12);
+      --timeline-ring: 0 0 0 6px rgba(255, 224, 112, 0.08);
+      --text-shadow: 0 4px 18px rgba(255, 224, 112, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    :root.green-theme {
+      --bg: #0b2612;
+      --surface: rgba(12, 48, 25, 0.92);
+      --text: #e8fff0;
+      --muted: #d8fae0;
+      --accent-1: #6bff96;
+      --accent-2: #85ffa8;
+      --accent-3: #53e37c;
+      --accent-4: #3cc964;
+      --accent-5: #2f9b47;
+      --accent: var(--accent-1);
+      --accent-strong: var(--accent-2);
+      --border: rgba(107, 255, 150, 0.18);
+      --menu-border: rgba(107, 255, 150, 0.18);
+      --header-bg: rgba(20, 38, 18, 0.92);
+      --header-border: rgba(107, 255, 150, 0.14);
+      --chip-bg: rgba(107, 255, 150, 0.08);
+      --chip-border: rgba(107, 255, 150, 0.22);
+      --card-bg: rgba(10, 20, 12, 0.92);
+      --card-border: rgba(107, 255, 150, 0.22);
+      --timeline-line: rgba(107, 255, 150, 0.12);
+      --timeline-ring: 0 0 0 6px rgba(107, 255, 150, 0.08);
+      --text-shadow: 0 4px 18px rgba(107, 255, 150, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
     }
 
     *, *::before, *::after {
@@ -52,9 +217,9 @@
       align-items: center;
       justify-content: flex-start;
       gap: 1rem;
-      padding: 1rem 2rem;
-      background: rgba(8, 18, 28, 0.75);
-      border-bottom: 1px solid rgba(127, 209, 255, 0.12);
+      padding: 0.8rem 2rem;
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--header-border);
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
       backdrop-filter: saturate(160%) blur(14px);
       z-index: 10;
@@ -62,7 +227,7 @@
 
     @media (min-width: 920px) {
       .site-header {
-        padding: 1.25rem 2.5rem;
+        padding: 0.8rem 2.5rem;
       }
 
       .site-nav {
@@ -88,23 +253,149 @@
       justify-content: flex-end;
     }
 
+    @media (max-width: 720px) {
+      .site-header {
+        flex-wrap: nowrap;
+      }
+
+      .site-brand {
+        flex-shrink: 0;
+      }
+
+      .site-nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 1rem;
+      }
+
+      .site-nav a {
+        white-space: nowrap;
+      }
+    }
+
     .site-nav a {
       font-size: clamp(0.88rem, 1.1vw, 0.95rem);
     }
 
+    a {
+      text-decoration: underline;
+    }
+
     .site-nav a,
-    .header-action {
+    .header-action,
+    .theme-toggle {
       color: var(--accent);
-      text-decoration: none;
-      font-size: 0.92rem;
+      font-size: clamp(0.78rem, 0.9vw, 0.92rem);
       transition: color 0.2s ease, transform 0.2s ease;
     }
 
     .header-action {
       display: inline-flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
       margin-left: 1rem;
       position: static;
+      min-height: 2.2rem;
+      padding: 0.45rem 0.95rem;
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .theme-toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 0.95rem;
+      min-height: 2.2rem;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      margin-left: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .theme-toggle .theme-progress {
+      position: absolute;
+      inset: 0;
+      width: 0;
+      background: rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+      transition: width 0.44s linear;
+    }
+
+    .theme-toggle.holding .theme-progress {
+      width: 100%;
+    }
+
+    .theme-toggle:hover {
+      color: var(--accent-strong);
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Responsive theme menu sizing inspired by Pretext adaptive layout principles. */
+    .theme-menu {
+      position: absolute;
+      right: 1rem;
+      top: calc(100% + 0.75rem);
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      width: clamp(220px, calc(100vw - 2rem), 280px);
+      border-radius: 18px;
+      background: rgba(8, 12, 30, 0.95);
+      border: 3px solid var(--border);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      z-index: 20;
+    }
+
+    .theme-menu.open {
+      display: flex;
+    }
+
+    .theme-menu button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font: inherit;
+      font-size: clamp(0.72rem, 0.9vw, 0.9rem);
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .theme-menu button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .theme-menu button span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-menu button .color-dot {
+      width: 0.9rem;
+      height: 0.9rem;
+      border-radius: 50%;
+      background: currentColor;
     }
 
     @media (max-width: 920px) {
@@ -120,13 +411,91 @@
     }
 
     @media (max-width: 720px) {
-      .header-action {
-        display: flex;
-        width: 100%;
+      .theme-control {
+        flex: 0 0 auto;
+        min-width: 0;
+        width: auto;
+        margin-bottom: 0.75rem;
+      }
+
+      .header-action,
+      .theme-toggle {
+        display: inline-flex;
+        width: auto;
+        max-width: none;
         justify-content: center;
-        padding: 0.95rem 1rem;
+        padding: 0.75rem 0.95rem;
         border-radius: 999px;
         text-align: center;
+        margin-left: 0;
+      }
+
+      .theme-menu {
+        position: static;
+        width: 100%;
+        max-width: none;
+        right: auto;
+        left: auto;
+        top: auto;
+        margin: 0.75rem auto 0;
+      }
+
+      .theme-menu button {
+        width: 100%;
+      }
+    }
+
+    /* Pretext-inspired narrow-screen line layout for brand + CTA. */
+    @media (max-width: 375px) {
+      .site-header {
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .site-brand {
+        order: 1;
+        flex: 0 0 auto;
+        min-width: 0;
+      }
+
+      .header-action {
+        order: 2;
+        flex: 0 0 auto;
+        max-width: min-content;
+        width: auto;
+        min-width: 0;
+        padding: 0.4rem 0.75rem;
+        margin-left: auto;
+      }
+
+      .theme-control {
+        order: 3;
+        width: auto;
+        min-width: 0;
+      }
+
+      .theme-toggle {
+        order: 4;
+        width: auto;
+        max-width: min-content;
+        flex: 0 0 auto;
+        min-width: 0;
+        padding: 0.4rem 0.75rem;
+        margin-left: auto;
+      }
+
+      .site-nav {
+        order: 4;
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+        gap: 0.75rem;
+      }
+
+      .site-nav a {
+        font-size: 0.82rem;
       }
     }
 
@@ -253,7 +622,7 @@
     #about *,
     #contact,
     #contact * {
-      text-shadow: 0 4px 18px rgba(127, 209, 255, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+      text-shadow: var(--text-shadow);
     }
 
     .panel p,
@@ -276,7 +645,6 @@
 
     .panel a {
       color: var(--accent);
-      text-decoration: none;
     }
 
     .panel a:hover {
@@ -300,9 +668,9 @@
       width: 100%;
       max-width: 240px;
       padding: 0.85rem 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--chip-border);
       border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--chip-bg);
       color: var(--text);
       font-size: 0.95rem;
       text-align: center;
@@ -323,9 +691,9 @@
     .project-card,
     .timeline-item {
       padding: 1.6rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
       border-radius: 22px;
-      background: rgba(5, 12, 20, 0.72);
+      background: var(--card-bg);
       backdrop-filter: blur(12px);
     }
 
@@ -373,7 +741,7 @@
       top: 0;
       bottom: 0;
       width: 2px;
-      background: rgba(127, 209, 255, 0.12);
+      background: var(--timeline-line);
     }
 
     .timeline-item {
@@ -390,7 +758,7 @@
       height: 14px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 0 6px rgba(127, 209, 255, 0.08);
+      box-shadow: var(--timeline-ring);
     }
 
     .contact-list {
@@ -473,6 +841,20 @@
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
     </nav>
+    <div class="theme-control" style="position: relative;">
+      <button class="theme-toggle" id="themeToggle" type="button">
+        <span class="theme-progress"></span>
+        <span class="theme-toggle-label">Click to switch and hold to choose</span>
+      </button>
+      <div class="theme-menu" id="themeMenu" aria-hidden="true">
+        <button type="button" data-theme="red"><span><span class="color-dot" style="color: #ff7b7b"></span>Red</span></button>
+        <button type="button" data-theme="orange"><span><span class="color-dot" style="color: #ff9a4d"></span>Orange</span></button>
+        <button type="button" data-theme="yellow"><span><span class="color-dot" style="color: #ffe070"></span>Yellow</span></button>
+        <button type="button" data-theme="green"><span><span class="color-dot" style="color: #6bff96"></span>Green</span></button>
+        <button type="button" data-theme="blue"><span><span class="color-dot" style="color: #7fd1ff"></span>Blue</span></button>
+        <button type="button" data-theme="purple"><span><span class="color-dot" style="color: #9ba7ff"></span>Purple</span></button>
+      </div>
+    </div>
     <a class="header-action" href="#contact">Let's talk</a>
   </header>
 
@@ -586,7 +968,7 @@
       <ul class="contact-list">
         <li>GitHub: <a href="https://github.com/ltv0" target="_blank" rel="noreferrer noopener">github.com/ltv0</a></li>
         <li>LinkedIn: <a href="https://www.linkedin.com/in/ltv0" target="_blank" rel="noreferrer noopener">linkedin.com/in/ltv0</a></li>
-        <li>Email: <a href="mailto:hello@ltv0.me">hello@ltv0.me</a></li>
+        <li>Email: <a href="mailto:ltvo@mines.edu">ltvo@mines.edu</a></li>
       </ul>
     </section>
   </main>
@@ -595,6 +977,147 @@
     <p>© 2026 Luke T. Vo · Built with Vite, TypeScript, and canvas animation</p>
   </footer>
 
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeMenu = document.getElementById('themeMenu');
+    const root = document.documentElement;
+    const storageKey = 'portfolio-color-scheme';
+    const schemeOrder = ['purple', 'blue', 'red', 'orange', 'yellow', 'green'];
+    const themeClasses = {
+      purple: 'purple-theme',
+      blue: 'blue-theme',
+      red: 'red-theme',
+      orange: 'orange-theme',
+      yellow: 'yellow-theme',
+      green: 'green-theme',
+    };
+    const schemeLabels = {
+      purple: 'Purple',
+      blue: 'Blue',
+      red: 'Red',
+      orange: 'Orange',
+      yellow: 'Yellow',
+      green: 'Green',
+    };
+
+    const resetThemeClasses = () => {
+      Object.values(themeClasses).forEach((className) => {
+        if (className) root.classList.remove(className);
+      });
+    };
+
+    const getNextScheme = (scheme) => {
+      const index = schemeOrder.indexOf(scheme);
+      return schemeOrder[(index + 1) % schemeOrder.length];
+    };
+
+    const setTheme = (theme) => {
+      resetThemeClasses();
+      const className = themeClasses[theme];
+      if (className) root.classList.add(className);
+
+      const nextScheme = getNextScheme(theme);
+      const label = themeToggle.querySelector('.theme-toggle-label');
+      if (label) {
+        label.textContent = `Click to switch to ${schemeLabels[nextScheme]} and hold to choose`;
+      }
+      localStorage.setItem(storageKey, theme);
+      return theme;
+    };
+
+    const savedTheme = localStorage.getItem(storageKey);
+    const initialTheme = schemeOrder.includes(savedTheme) ? savedTheme : 'blue';
+    let currentTheme = setTheme(initialTheme);
+
+    let menuOpenedByLongPress = false;
+
+    const openMenu = () => {
+      themeMenu.classList.add('open');
+      themeMenu.setAttribute('aria-hidden', 'false');
+      themeToggle.classList.add('holding');
+      menuOpenedByLongPress = true;
+    };
+
+    const closeMenu = () => {
+      themeMenu.classList.remove('open');
+      themeMenu.setAttribute('aria-hidden', 'true');
+    };
+
+    let holdTimer = null;
+    let progressTimer = null;
+    let longPressTriggered = false;
+    let ignoreNextDocumentClick = false;
+
+    const cancelHold = () => {
+      if (menuOpenedByLongPress) return;
+      if (holdTimer) {
+        window.clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+      if (progressTimer) {
+        window.clearTimeout(progressTimer);
+        progressTimer = null;
+      }
+      themeToggle.classList.remove('holding');
+    };
+
+    const endHold = () => {
+      if (!longPressTriggered) {
+        currentTheme = setTheme(getNextScheme(currentTheme));
+        cancelHold();
+      }
+    };
+
+    const startHold = (event) => {
+      if (themeMenu.classList.contains('open')) return;
+      longPressTriggered = false;
+
+      progressTimer = window.setTimeout(() => {
+        themeToggle.classList.add('holding');
+        progressTimer = null;
+      }, 160);
+
+      holdTimer = window.setTimeout(() => {
+        longPressTriggered = true;
+        openMenu();
+        ignoreNextDocumentClick = true;
+      }, 600);
+    };
+
+    themeToggle.addEventListener('mousedown', startHold);
+    themeToggle.addEventListener('touchstart', startHold, { passive: true });
+    themeToggle.addEventListener('mouseup', endHold);
+    themeToggle.addEventListener('mouseleave', cancelHold);
+    themeToggle.addEventListener('touchend', endHold);
+    themeToggle.addEventListener('touchcancel', cancelHold);
+
+    themeMenu.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-theme]');
+      if (!button) return;
+      const theme = button.getAttribute('data-theme');
+      if (!theme) return;
+      currentTheme = setTheme(theme);
+      menuOpenedByLongPress = false;
+      cancelHold();
+      closeMenu();
+    });
+
+    document.addEventListener('click', (event) => {
+      if (ignoreNextDocumentClick) {
+        ignoreNextDocumentClick = false;
+        return;
+      }
+      if (!themeMenu.contains(event.target) && !themeToggle.contains(event.target)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+      }
+    });
+  </script>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

@@ -77,6 +77,32 @@ export class PretextRenderer {
     return maxLineWidth
   }
 
+  measureNaturalWidth(
+    text: string,
+    font: string,
+    whiteSpace: WhiteSpaceMode = 'pre-wrap',
+  ): number {
+    return this.measureMaxLineWidth(text, font, UNBOUNDED_WIDTH, whiteSpace)
+  }
+
+  measureLineStats(
+    text: string,
+    font: string,
+    maxWidth = UNBOUNDED_WIDTH,
+    whiteSpace: WhiteSpaceMode = 'pre-wrap',
+  ): { lineCount: number; maxLineWidth: number } {
+    const prepared = this.getPreparedSegments(text, font, whiteSpace)
+    let lineCount = 0
+    let maxLineWidth = 0
+
+    walkLineRanges(prepared, maxWidth, line => {
+      lineCount += 1
+      if (line.width > maxLineWidth) maxLineWidth = line.width
+    })
+
+    return { lineCount, maxLineWidth }
+  }
+
   getBlock(
     text: string,
     font: string,

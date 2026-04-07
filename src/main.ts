@@ -3,6 +3,7 @@ import { TextSkyBackground } from './background'
 
 type Point = { x: number; y: number }
 
+const TOUCH_REPULSION_STRENGTH = 14
 const background = new TextSkyBackground(fnt('monospace', 18), 22)
 
 function getCanvas(): HTMLCanvasElement | null {
@@ -113,7 +114,7 @@ function onTouchStart(event: TouchEvent): void {
   if (!pointer) return
 
   if (isInsideCanvas(pointer, getCanvas()!)) {
-    background.setPointer(pointer.x, pointer.y)
+    background.setPointer(pointer.x, pointer.y, TOUCH_REPULSION_STRENGTH)
   }
 
   updateHoverRectFromLink(getTouchLink(event))
@@ -127,7 +128,7 @@ function onTouchMove(event: TouchEvent): void {
   if (!canvas) return
 
   if (isInsideCanvas(pointer, canvas)) {
-    background.setPointer(pointer.x, pointer.y)
+    background.setPointer(pointer.x, pointer.y, TOUCH_REPULSION_STRENGTH)
   } else {
     background.clearPointer()
   }
@@ -161,29 +162,60 @@ function getHeaderRuleLayout(): { x: number; y: number; width: number } {
   return { x, y, width: maxWidth }
 }
 
+function getCssVar(name: string, fallback = ''): string {
+  if (typeof window === 'undefined' || !document.documentElement) return fallback
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback
+}
+
+function getHeaderTitle(): string {
+  return document.querySelector<HTMLElement>('.site-brand')?.textContent?.trim() ?? 'Portfolio'
+}
+
 function drawHeading(): void {
   if (!ctx) return
 
-  const title = ''
-  const titleFont = fnt('monospace', 34, 'bold')
-  const titleLineHeight = 40
+  const canvas = getCanvas()
+  if (!canvas) return
 
+  const header = document.querySelector<HTMLElement>('.site-header')
+  const title = getHeaderTitle()
+  const titleFont = fnt('monospace', 28, 'bold')
+  const titleLineHeight = 36
+
+  const headerRect = header ? getCanvasRect(canvas, header.getBoundingClientRect()) : new DOMRect(24, 0, W - 48, 0)
+  const maxTextWidth = Math.max(120, Math.min(headerRect.width - 32, W - 80))
+  const headerX = header ? Math.max(24, headerRect.left + 8) : 40
+
+  const titleBlock = renderer.getBlock(title, titleFont, titleLineHeight, maxTextWidth, 'normal')
+
+  const titleY = 18
+
+  renderer.drawBlock(ctx, titleBlock, headerX, titleY, {
+    color: getCssVar('--text', '#f6f2df'),
+  })
+
+  const titleStats = renderer.measureLineStats(title, titleFont, maxTextWidth, 'normal')
+  const ruleWidth = Math.min(maxTextWidth, Math.max(titleStats.maxLineWidth + 16, 120))
+  const topRuleY = Math.max(8, titleY - titleLineHeight + 8)
   const rule = getHeaderRuleLayout()
 
-  renderer.drawText(ctx, title, titleFont, titleLineHeight, W / 2, 36, {
-    color: '#f6f2df',
-    align: 'center',
+  renderer.drawHRule(ctx, '-', titleFont, titleLineHeight, headerX, topRuleY, ruleWidth, {
+    color: getCssVar('--accent-strong', '#7fd1ff'),
+  })
+  renderer.drawHRule(ctx, '-', titleFont, titleLineHeight, rule.x, rule.y, rule.width, {
+    color: getCssVar('--accent', '#9ba7ff'),
   })
 
-  renderer.drawHRule(ctx, '-', titleFont, titleLineHeight, rule.x, rule.y, rule.width, {
-    color: '#7fd1ff',
-  })
+  // Dynamic header layout uses Pretext line measurement helpers so the title
+  // and subtitle wrap naturally as the canvas or header region resizes.
+  // The unused Pretext features in src/pretext-unused-features.md are a good
+  // future reference if we need variable-width line-by-line layout or locale-aware wrapping.
 }
 
 function drawFrame(): void {
   if (!ctx) return
 
-  clearCanvas('#08121c')
+  clearCanvas(getCssVar('--bg', '#0d102e'))
   background.update()
   background.draw(ctx)
   drawHeading()

@@ -6,6 +6,7 @@ type HoverVector = { dx: number; dy: number; dist: number }
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=-\\/|<>.'
 const HOVER_RADIUS = 60
 const CURSOR_REPULSION_STRENGTH = 6
+const TOUCH_REPULSION_STRENGTH = 14
 const LINK_REPULSION_STRENGTH = 4
 const DAMPING = 0.86
 
@@ -19,6 +20,7 @@ export class TextSkyBackground {
   private height = 0
   private mouseX = 0
   private mouseY = 0
+  private pointerStrength = CURSOR_REPULSION_STRENGTH
   private hasPointer = false
   private pointerFrozen = false
   private hoverRect: DOMRect | null = null
@@ -38,9 +40,10 @@ export class TextSkyBackground {
     )
   }
 
-  setPointer(x: number, y: number): void {
+  setPointer(x: number, y: number, strength = CURSOR_REPULSION_STRENGTH): void {
     this.mouseX = x
     this.mouseY = y
+    this.pointerStrength = strength
     this.hasPointer = true
     this.pointerFrozen = false
   }
@@ -48,6 +51,7 @@ export class TextSkyBackground {
   clearPointer(preservePointer = false): void {
     this.hasPointer = false
     this.pointerFrozen = preservePointer
+    this.pointerStrength = CURSOR_REPULSION_STRENGTH
   }
 
   setHoverRect(rect: DOMRect | null): void {
@@ -62,10 +66,17 @@ export class TextSkyBackground {
     this.updateOffsets()
   }
 
+  private getCssVar(name: string, fallback: string): string {
+    if (typeof window === 'undefined' || !document.documentElement) return fallback
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback
+  }
+
   draw(context: CanvasRenderingContext2D): void {
     context.save()
     context.font = this.font
     context.textBaseline = 'top'
+
+    const glyphColor = this.getCssVar('--accent', '#6fe7fc')
 
     for (let rowIndex = 0; rowIndex < this.rows; rowIndex++) {
       for (let colIndex = 0; colIndex < this.cols; colIndex++) {
@@ -74,7 +85,7 @@ export class TextSkyBackground {
         const x = colIndex * this.charWidth + offset.dx
         const y = rowIndex * this.lineHeight + offset.dy
 
-        context.fillStyle = '#6fe7fc'
+        context.fillStyle = glyphColor
         context.globalAlpha = this.getAlphaForCell(x, y)
         context.fillText(char, x, y)
       }
@@ -121,7 +132,7 @@ export class TextSkyBackground {
         const hover = this.getHoverVector(charX, charY)
 
         if (hover.dist < HOVER_RADIUS) {
-          const strength = this.hoverRect ? LINK_REPULSION_STRENGTH : CURSOR_REPULSION_STRENGTH
+          const strength = this.hoverRect ? LINK_REPULSION_STRENGTH : this.pointerStrength
           const power = ((HOVER_RADIUS - hover.dist) / HOVER_RADIUS) * strength
           offset.dx += (hover.dx / hover.dist) * power
           offset.dy += (hover.dy / hover.dist) * power
