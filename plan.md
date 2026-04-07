@@ -5,7 +5,7 @@ Turn this project into a fully developed portfolio website that showcases your w
 
 ## Current state
 - Static landing page with a canvas background and two project links
-- Uses Vite, TypeScript, and `@chenglou/pretext`
+- Uses Vite, TypeScript, and [@chenglou/pretext](https://github.com/chenglou/pretext)
 - Minimal styling and no portfolio sections yet
 
 ## Recommended final site structure
@@ -42,11 +42,13 @@ Turn this project into a fully developed portfolio website that showcases your w
 - Add `styles.css` for layout, responsiveness, and theme
 - Keep the current canvas animation in place as a visual brand element
 
-### Option B: Add React-style structure with components
-- Keep Vite + TypeScript
-- Add a lightweight component structure in `src/`
-- Use plain TS modules and DOM rendering if you want minimal overhead
-- Build reusable UI modules for hero, projects, about, contact
+
+### HTML and CSS focus
+- Use `index.html` as the main page shell with semantic sections for hero, about, projects, skills, experience, contact, and footer
+- Add `styles.css` for typography, spacing, responsive layout, color palette, and hover/focus states
+- Use CSS variables for theme colors and media queries for mobile-first responsiveness
+- Keep HTML structure clean, accessible, and easy to update without heavy frameworks
+- Use CSS to layer the canvas background behind content and keep the page lightweight
 
 ### Recommended file structure
 ```
@@ -70,6 +72,20 @@ Turn this project into a fully developed portfolio website that showcases your w
     └── favicon.ico
 ```
 
+## Resources
+- **HTML & CSS**: semantic structure, responsive layout, CSS variables, grid/flexbox, hover and focus states
+- **TypeScript**: typed DOM interactions, modules, and maintainable app logic
+- **Vite**: fast development server, asset bundling, and build optimization
+- **Canvas / `@chenglou/pretext`**: animated hero background and custom visual effects
+- **Static site deployment / CNAME**: deployment and custom domain configuration
+- **Learning references**:
+  - [MDN Web Docs — HTML](https://developer.mozilla.org/docs/Web/HTML)
+  - [MDN Web Docs — CSS](https://developer.mozilla.org/docs/Web/CSS)
+  - [Vite documentation](https://vitejs.dev/guide/)
+  - [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
+  - [Vite deployment guide](https://vitejs.dev/guide/static-deploy.html)
+  - [Pretext GitHub repository](https://github.com/chenglou/pretext)
+
 ## UX and design
 - Use a dark theme with a bold accent color similar to the current site
 - Keep typography clean and legible: monospace can stay, but add a second neutral font for body copy
@@ -91,9 +107,9 @@ Turn this project into a fully developed portfolio website that showcases your w
 
 ## Deployment plan
 1. Build locally with `npm run build`
-2. Deploy using GitHub Pages or GitHub Actions
+2. Deploy using GitHub Actions or your existing hosting workflow
 3. Optionally configure a custom domain with CNAME
-4. Verify site loads at `https://ltv0.github.io/<repo>` or custom domain
+4. Verify site loads at the configured production URL
 
 ## Milestones
 1. **MVP**: Add hero, about, projects, contact, responsive styling
@@ -107,7 +123,20 @@ Turn this project into a fully developed portfolio website that showcases your w
 2. Add CSS for layout, typography, and responsiveness
 3. Add content for projects, bio, and contact info
 4. Keep the canvas animation and integrate it as a hero background
-5. Deploy and test on GitHub Pages
+5. Deploy and test on the configured production URL
+
+## Progress checklist
+- [x] Create page structure for hero, about, projects, and contact
+- [x] Add a fixed header with navigation links
+- [x] Add direct LinkedIn mention in the About section
+- [ ] Add a Skills / Tools section with a technology grid
+- [ ] Add an Experience / Timeline section with role highlights
+- [ ] Add a footer with social links and copyright info
+- [ ] Improve project cards with descriptions, tech stack, and links
+- [ ] Add responsive CSS layout for mobile and desktop
+- [ ] Polish the hero section copy and CTA flow
+- [ ] Verify canvas background integrates cleanly behind content
+- [ ] Finalize content and publish the updated site
 
 ## Notes
 - Keep the page lightweight and fast
