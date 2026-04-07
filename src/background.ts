@@ -2,7 +2,8 @@ import { renderer } from './canvas'
 
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=-\\/|<>.'
 const HOVER_RADIUS = 60
-const REPULSION_STRENGTH = 2
+const CURSOR_REPULSION_STRENGTH = 6
+const LINK_REPULSION_STRENGTH = 4
 const DAMPING = 0.86
 
 export class TextSkyBackground {
@@ -69,7 +70,10 @@ export class TextSkyBackground {
           const { dx, dy, dist } = this.getHoverVector(charX, rowIndex * this.lineHeight + this.lineHeight / 2)
 
           if (dist < HOVER_RADIUS) {
-            const power = (1 - dist / HOVER_RADIUS) * REPULSION_STRENGTH
+            const strength = this.hoverRect
+              ? LINK_REPULSION_STRENGTH
+              : CURSOR_REPULSION_STRENGTH
+            const power = (1 - dist / HOVER_RADIUS) * strength
             offset.dx += (dx / dist) * power
             offset.dy += (dy / dist) * power
           }
