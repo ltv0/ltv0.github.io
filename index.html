@@ -256,13 +256,30 @@
 
     .top-divider {
       position: fixed;
-      top: 0;
+      top: var(--header-height);
       left: 0;
       right: 0;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.12);
-      z-index: 11;
+      height: 12px;
+      background-image: repeating-linear-gradient(
+        to right,
+        rgba(255,255,255,0) 0px,
+        rgba(255,255,255,0) 8px,
+        rgba(255,255,255,0.14) 8px,
+        rgba(255,255,255,0.14) 12px
+      );
+      background-repeat: repeat-x;
+      background-position: center;
+      opacity: 0.95;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+      z-index: 9;
       pointer-events: none;
+    }
+
+    @media (max-width: 720px) {
+      .top-divider {
+        top: auto;
+        bottom: 0;
+      }
     }
 
     .site-header {
@@ -1179,7 +1196,6 @@
   </style>
 </head>
 <body class="overlay-links">
-  <div class="top-divider"></div>
   <canvas></canvas>
 
   <header class="site-header">
