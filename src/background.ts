@@ -16,6 +16,8 @@ export class TextSkyBackground {
   private mouseX = 0
   private mouseY = 0
   private hasPointer = false
+  private pointerFrozen = false
+  private hoverRect: DOMRect | null = null
   private frame = 0
 
   constructor(public font = '16px monospace', public lineHeight = 20) {}
@@ -36,10 +38,16 @@ export class TextSkyBackground {
     this.mouseX = x
     this.mouseY = y
     this.hasPointer = true
+    this.pointerFrozen = false
   }
 
-  clearPointer(): void {
+  clearPointer(preservePointer = false): void {
     this.hasPointer = false
+    this.pointerFrozen = preservePointer
+  }
+
+  setHoverRect(rect: DOMRect | null): void {
+    this.hoverRect = rect
   }
 
   update(): void {
@@ -56,14 +64,11 @@ export class TextSkyBackground {
     for (let rowIndex = 0; rowIndex < this.rows; rowIndex++) {
       for (let colIndex = 0; colIndex < this.cols; colIndex++) {
         const offset = this.offsets[rowIndex][colIndex]
-        if (this.hasPointer) {
+        if (this.hasPointer || this.pointerFrozen || this.hoverRect !== null) {
           const charX = colIndex * this.charWidth + this.charWidth / 2
-          const charY = rowIndex * this.lineHeight + this.lineHeight / 2
-          const dx = charX - this.mouseX
-          const dy = charY - this.mouseY
-          const dist = Math.hypot(dx, dy)
+          const { dx, dy, dist } = this.getHoverVector(charX, rowIndex * this.lineHeight + this.lineHeight / 2)
 
-          if (dist < HOVER_RADIUS && dist > 0) {
+          if (dist < HOVER_RADIUS) {
             const power = (1 - dist / HOVER_RADIUS) * REPULSION_STRENGTH
             offset.dx += (dx / dist) * power
             offset.dy += (dy / dist) * power
@@ -89,7 +94,8 @@ export class TextSkyBackground {
         const y = rowIndex * this.lineHeight + offset.dy
         const alpha = this.getAlphaForCell(x, y)
 
-        context.fillStyle = `rgba(130, 190, 255, ${alpha})`
+        context.fillStyle = '#6fe7fc'
+        context.globalAlpha = alpha
         context.fillText(char, x, y)
       }
     }
@@ -98,11 +104,33 @@ export class TextSkyBackground {
   }
 
   private getAlphaForCell(x: number, y: number): number {
-    if (!this.hasPointer) return 0.08
+    if (!this.hasPointer && !this.pointerFrozen && this.hoverRect === null) return 0.08
+    const { dist } = this.getHoverVector(x, y)
+    return Math.max(0.08, Math.min(0.18, 0.08 + (HOVER_RADIUS - dist) / HOVER_RADIUS * 0.1))
+  }
+
+  private getHoverVector(x: number, y: number): { dx: number; dy: number; dist: number } {
+    if (this.hoverRect !== null) {
+      const nearestX = Math.min(Math.max(x, this.hoverRect.left), this.hoverRect.right)
+      const nearestY = Math.min(Math.max(y, this.hoverRect.top), this.hoverRect.bottom)
+      let dx = x - nearestX
+      let dy = y - nearestY
+      let dist = Math.hypot(dx, dy)
+
+      if (dist === 0) {
+        const centerX = (this.hoverRect.left + this.hoverRect.right) / 2
+        const centerY = (this.hoverRect.top + this.hoverRect.bottom) / 2
+        dx = x - centerX
+        dy = y - centerY
+        dist = Math.hypot(dx, dy) || 1
+      }
+
+      return { dx, dy, dist }
+    }
+
     const dx = x - this.mouseX
     const dy = y - this.mouseY
-    const dist = Math.hypot(dx, dy)
-    return Math.max(0.04, Math.min(0.18, 0.08 + (HOVER_RADIUS - dist) / HOVER_RADIUS * 0.1))
+    return { dx, dy, dist: Math.hypot(dx, dy) }
   }
 
   private createRow(): string[] {

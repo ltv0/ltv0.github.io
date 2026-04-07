@@ -18,7 +18,14 @@ function onPointerMove(event: PointerEvent): void {
   if (!canvas) return
 
   const rect = canvas.getBoundingClientRect()
-  background.setPointer(event.clientX - rect.left, event.clientY - rect.top)
+  const x = event.clientX - rect.left
+  const y = event.clientY - rect.top
+
+  if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+    background.setPointer(x, y)
+  } else {
+    background.clearPointer()
+  }
 }
 
 function onPointerLeave(): void {
@@ -33,12 +40,8 @@ function drawFrame(): void {
   background.draw(ctx)
 
   const title = 'Luke T. Vo Portfolio'
-  const body = `### [dev post here too](https://devpost.com/software/weather-report-2aew5f) ca\n` +
-    `### [hackathon game link here](http://ltv0.me/blaster-hack-commandline-game/)`
-  const titleFont = fnt('monospace', 28, 'bold')
-  const bodyFont = fnt('monospace', 18)
-  const titleLineHeight = 34
-  const bodyLineHeight = 24
+  const titleFont = fnt('monospace', 34, 'bold')
+  const titleLineHeight = 40
 
   renderer.drawText(ctx, title, titleFont, titleLineHeight, W / 2, 36, {
     color: '#f6f2df',
@@ -47,11 +50,6 @@ function drawFrame(): void {
 
   renderer.drawHRule(ctx, '-', titleFont, titleLineHeight, 40, 84, W - 80, {
     color: '#7fd1ff',
-  })
-
-  const block = renderer.getBlock(body, bodyFont, bodyLineHeight, W - 80)
-  renderer.drawBlock(ctx, block, 40, 120, {
-    color: '#d6deeb',
   })
 }
 
@@ -68,8 +66,16 @@ function init(): void {
 
   setCanvas(canvas)
   resizeCanvas()
-  canvas.addEventListener('pointermove', onPointerMove)
-  canvas.addEventListener('pointerleave', onPointerLeave)
+
+  document.addEventListener('pointermove', onPointerMove)
+  document.addEventListener('pointerleave', onPointerLeave)
+
+  const overlayLinks = document.querySelectorAll<HTMLAnchorElement>('.overlay-links a')
+  overlayLinks.forEach((link) => {
+    link.addEventListener('pointerenter', onPointerMove)
+    link.addEventListener('pointermove', onPointerMove)
+  })
+
   window.addEventListener('resize', resizeCanvas)
   requestAnimationFrame(loop)
 }

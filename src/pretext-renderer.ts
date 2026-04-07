@@ -207,6 +207,25 @@ export class PretextRenderer {
   }
 
   /**
+   * Draw a vertical rule using a repeated character and pretext line layout.
+   */
+  drawVRule(
+    context: CanvasRenderingContext2D,
+    char: string,
+    font: string,
+    lineHeight: number,
+    x: number,
+    y: number,
+    height: number,
+    options: DrawOptions = {},
+  ): void {
+    const rows = Math.max(1, Math.floor(height / lineHeight))
+    const text = Array.from({ length: rows }, () => char).join('\n')
+    const block = this.getBlock(text, font, lineHeight, UNBOUNDED_WIDTH, 'pre-wrap')
+    this.drawBlock(context, block, x, y, options)
+  }
+
+  /**
    * Draw a Unicode box-drawing border around a rect.
    */
   drawGlyphBox(
