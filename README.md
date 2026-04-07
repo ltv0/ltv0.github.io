@@ -39,9 +39,33 @@ npm run build
 
 The output will be generated into the `docs/` folder.
 
+## GitHub Pages Deployment
+
+This repository is configured to deploy automatically to GitHub Pages from the built `docs/` folder.
+
+### Automatic deployment with GitHub Actions
+
+The workflow at `.github/workflows/deploy.yml` builds the site and deploys the generated `docs/` folder to GitHub Pages.
+
+1. Commit your changes and push them to the `main` branch.
+2. GitHub Actions runs the deploy workflow automatically.
+3. The workflow installs dependencies, runs `npm run build`, uploads the `docs/` output, and deploys it via `actions/deploy-pages@v5`.
+
+### Manual deployment trigger
+
+If you prefer to run the workflow manually, open the Actions tab in GitHub, select the `Deploy to GitHub Pages` workflow, and click `Run workflow`.
+
+### Configuration notes
+
+- `vite.config.ts` uses `base: './'` so the built site works correctly from the `docs/` folder.
+- The workflow expects `docs/` as the production output directory.
+- If you use a custom domain, keep or update the `CNAME` file in the repository root.
+- Confirm GitHub Pages is set to use GitHub Actions deployment in your repository settings if it is not already configured.
+
 ## Notes
 
 - The site uses `vite` for local development and production builds.
+- Vite is chosen because it is fast to update and makes it easy to see live changes to your site while you work.
 - The animated canvas background is powered by `src/main.ts` and `src/canvas.ts`.
 - Keep the `base: './'` Vite config so the site works in subdirectories or GitHub Pages.
 
