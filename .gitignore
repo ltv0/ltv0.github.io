@@ -3,7 +3,6 @@
 
 # Build output
 /dist/
-/docs/
 
 # Logs
 npm-debug.log*
