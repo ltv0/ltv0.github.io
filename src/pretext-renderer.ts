@@ -1,8 +1,10 @@
 import {
+  clearCache as clearPretextCache,
   layout,
   layoutWithLines,
   prepare,
   prepareWithSegments,
+  setLocale as setPretextLocale,
   walkLineRanges,
   type PreparedText,
   type PreparedTextWithSegments,
@@ -11,6 +13,10 @@ import {
 const UNBOUNDED_WIDTH = 100_000
 
 export type WhiteSpaceMode = 'normal' | 'pre-wrap'
+
+export type TextLayoutOptions = {
+  whiteSpace?: WhiteSpaceMode
+}
 
 export type TextBlock = {
   text: string
@@ -51,13 +57,14 @@ export class PretextRenderer {
     font: string,
     lineHeight: number,
     maxWidth: number,
-    whiteSpace: WhiteSpaceMode = 'normal',
+    options: TextLayoutOptions = {},
   ): number {
+    const whiteSpace = options.whiteSpace ?? 'normal'
     const key = `h::${font}::${lineHeight}::${maxWidth}::${whiteSpace}::${text}`
     const cached = this.heightCache.get(key)
     if (cached !== undefined) return cached
 
-    const prepared = this.getPrepared(text, font, whiteSpace)
+    const prepared = this.getPrepared(text, font, { whiteSpace })
     const measured = layout(prepared, maxWidth, lineHeight).height
     this.heightCache.set(key, measured)
     return measured
@@ -67,9 +74,10 @@ export class PretextRenderer {
     text: string,
     font: string,
     maxWidth = UNBOUNDED_WIDTH,
-    whiteSpace: WhiteSpaceMode = 'pre-wrap',
+    options: TextLayoutOptions = {},
   ): number {
-    const prepared = this.getPreparedSegments(text, font, whiteSpace)
+    const whiteSpace = options.whiteSpace ?? 'pre-wrap'
+    const prepared = this.getPreparedSegments(text, font, { whiteSpace })
     let maxLineWidth = 0
     walkLineRanges(prepared, maxWidth, line => {
       if (line.width > maxLineWidth) maxLineWidth = line.width
@@ -80,18 +88,19 @@ export class PretextRenderer {
   measureNaturalWidth(
     text: string,
     font: string,
-    whiteSpace: WhiteSpaceMode = 'pre-wrap',
+    options: TextLayoutOptions = {},
   ): number {
-    return this.measureMaxLineWidth(text, font, UNBOUNDED_WIDTH, whiteSpace)
+    return this.measureMaxLineWidth(text, font, UNBOUNDED_WIDTH, options)
   }
 
   measureLineStats(
     text: string,
     font: string,
     maxWidth = UNBOUNDED_WIDTH,
-    whiteSpace: WhiteSpaceMode = 'pre-wrap',
+    options: TextLayoutOptions = {},
   ): { lineCount: number; maxLineWidth: number } {
-    const prepared = this.getPreparedSegments(text, font, whiteSpace)
+    const whiteSpace = options.whiteSpace ?? 'pre-wrap'
+    const prepared = this.getPreparedSegments(text, font, { whiteSpace })
     let lineCount = 0
     let maxLineWidth = 0
 
@@ -108,13 +117,14 @@ export class PretextRenderer {
     font: string,
     lineHeight: number,
     maxWidth = UNBOUNDED_WIDTH,
-    whiteSpace: WhiteSpaceMode = 'pre-wrap',
+    options: TextLayoutOptions = {},
   ): TextBlock {
+    const whiteSpace = options.whiteSpace ?? 'pre-wrap'
     const key = `b::${font}::${lineHeight}::${maxWidth}::${whiteSpace}::${text}`
     const cached = this.blockCache.get(key)
     if (cached !== undefined) return cached
 
-    const prepared = this.getPreparedSegments(text, font, whiteSpace)
+    const prepared = this.getPreparedSegments(text, font, { whiteSpace })
     const laidOut = layoutWithLines(prepared, maxWidth, lineHeight)
     const width = laidOut.lines.reduce((largest, line) => Math.max(largest, line.width), 0)
     const block: TextBlock = {
@@ -196,9 +206,9 @@ export class PretextRenderer {
     y: number,
     options: DrawOptions = {},
     maxWidth = UNBOUNDED_WIDTH,
-    whiteSpace: WhiteSpaceMode = 'pre-wrap',
+    layoutOptions: TextLayoutOptions = {},
   ): TextBlock {
-    const block = this.getBlock(text, font, lineHeight, maxWidth, whiteSpace)
+    const block = this.getBlock(text, font, lineHeight, maxWidth, layoutOptions)
     this.drawBlock(context, block, x, y, options)
     return block
   }
@@ -286,7 +296,21 @@ export class PretextRenderer {
     }
   }
 
-  private getPrepared(text: string, font: string, whiteSpace: WhiteSpaceMode): PreparedText {
+  clearCache(): void {
+    clearPretextCache()
+    this.preparedCache.clear()
+    this.preparedSegmentCache.clear()
+    this.blockCache.clear()
+    this.heightCache.clear()
+  }
+
+  setLocale(locale?: string): void {
+    setPretextLocale(locale)
+    this.clearCache()
+  }
+
+  private getPrepared(text: string, font: string, options: TextLayoutOptions): PreparedText {
+    const whiteSpace = options.whiteSpace ?? 'normal'
     const key = `p::${font}::${whiteSpace}::${text}`
     const cached = this.preparedCache.get(key)
     if (cached !== undefined) return cached
@@ -299,8 +323,9 @@ export class PretextRenderer {
   private getPreparedSegments(
     text: string,
     font: string,
-    whiteSpace: WhiteSpaceMode,
+    options: TextLayoutOptions,
   ): PreparedTextWithSegments {
+    const whiteSpace = options.whiteSpace ?? 'normal'
     const key = `s::${font}::${whiteSpace}::${text}`
     const cached = this.preparedSegmentCache.get(key)
     if (cached !== undefined) return cached

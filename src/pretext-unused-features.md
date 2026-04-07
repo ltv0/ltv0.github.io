@@ -59,9 +59,21 @@ Common rich-inline APIs:
 
 - `whiteSpace: 'normal' | 'pre-wrap'`
   - Controls whitespace handling for browser-like text wrapping.
+  - This repository now leverages whitespace options through the renderer for more robust line layout.
 
-- `wordBreak: 'normal' | 'keep-all'`
+- `wordBreak: 'normal' | 'keep-all'
   - Controls breaking behavior for CJK / Hangul text and long runs.
+  - Available in the renderer for future edge-case handling of long tokens.
+
+- `locale`
+  - Controls locale-sensitive line breaking in `prepare()`.
+  - Also available in the renderer for future multilingual or locale-aware layouts.
+
+## Renderer helpers
+
+- `clearCache()`
+  - Clears the renderer's internal Pretext and block caches.
+  - Useful when the app changes fonts, locale, or text variants and needs to release stale measurements.
 
 ## Notes
 

@@ -186,7 +186,9 @@ function drawHeading(): void {
   const maxTextWidth = Math.max(120, Math.min(headerRect.width - 32, W - 80))
   const headerX = header ? Math.max(24, headerRect.left + 8) : 40
 
-  const titleBlock = renderer.getBlock(title, titleFont, titleLineHeight, maxTextWidth, 'normal')
+  const titleBlock = renderer.getBlock(title, titleFont, titleLineHeight, maxTextWidth, {
+    whiteSpace: 'normal',
+  })
 
   const titleY = 18
 
