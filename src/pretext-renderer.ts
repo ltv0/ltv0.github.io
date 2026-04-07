@@ -217,7 +217,7 @@ export class PretextRenderer {
    * Measure just the pixel width of a single-line string.
    */
   measureWidth(text: string, font: string): number {
-    return this.measureMaxLineWidth(text, font, UNBOUNDED_WIDTH, 'pre-wrap')
+    return this.measureMaxLineWidth(text, font, UNBOUNDED_WIDTH, { whiteSpace: 'pre-wrap' })
   }
 
   /**
@@ -238,7 +238,7 @@ export class PretextRenderer {
     if (charWidth <= 0) return
     const count = Math.max(1, Math.floor(width / charWidth))
     const repeated = char.repeat(count)
-    const block = this.getBlock(repeated, font, lineHeight, UNBOUNDED_WIDTH, 'pre-wrap')
+    const block = this.getBlock(repeated, font, lineHeight, UNBOUNDED_WIDTH, { whiteSpace: 'pre-wrap' })
     this.drawBlock(context, block, x, y, options)
   }
 
@@ -257,7 +257,7 @@ export class PretextRenderer {
   ): void {
     const rows = Math.max(1, Math.floor(height / lineHeight))
     const text = Array.from({ length: rows }, () => char).join('\n')
-    const block = this.getBlock(text, font, lineHeight, UNBOUNDED_WIDTH, 'pre-wrap')
+    const block = this.getBlock(text, font, lineHeight, UNBOUNDED_WIDTH, { whiteSpace: 'pre-wrap' })
     this.drawBlock(context, block, x, y, options)
   }
 
