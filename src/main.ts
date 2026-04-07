@@ -42,8 +42,8 @@ function resizeCanvas(): void {
   const canvas = getCanvas()
   if (!canvas) return
 
-  const width = Math.max(300, canvas.clientWidth)
-  const height = Math.max(200, canvas.clientHeight)
+  const width = Math.max(300, canvas.clientWidth || window.innerWidth)
+  const height = Math.max(200, canvas.clientHeight || window.innerHeight)
 
   updateViewport(width, height)
   background.resize(width, height)
@@ -250,6 +250,7 @@ function init(): void {
   document.querySelectorAll<HTMLAnchorElement>('.overlay-links a').forEach(attachLinkHoverHandlers)
 
   window.addEventListener('resize', resizeCanvas)
+  window.addEventListener('orientationchange', resizeCanvas)
   requestAnimationFrame(loop)
 }
 

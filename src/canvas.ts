@@ -28,8 +28,10 @@ export function updateViewport(width: number, height: number): void {
   W = width
   H = height
   if (ctx) {
-    ctx.canvas.width = width
-    ctx.canvas.height = height
+    const dpr = Math.max(1, Math.min(4, Math.floor(window.devicePixelRatio || 1)))
+    ctx.canvas.width = width * dpr
+    ctx.canvas.height = height * dpr
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   }
 }
 
