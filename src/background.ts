@@ -1,5 +1,8 @@
 import { renderer } from './canvas'
 
+type Offset = { dx: number; dy: number }
+type HoverVector = { dx: number; dy: number; dist: number }
+
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=-\\/|<>.'
 const HOVER_RADIUS = 60
 const CURSOR_REPULSION_STRENGTH = 6
@@ -11,7 +14,7 @@ export class TextSkyBackground {
   private cols = 0
   private rows = 0
   private grid: string[][] = []
-  private offsets: { dx: number; dy: number }[][] = []
+  private offsets: Offset[][] = []
   private width = 0
   private height = 0
   private mouseX = 0
@@ -55,34 +58,8 @@ export class TextSkyBackground {
     this.frame += 1
     if (this.grid.length === 0) return
 
-    const mutateCount = Math.max(1, Math.floor((this.cols * this.rows) / 120))
-    for (let i = 0; i < mutateCount; i++) {
-      const rowIndex = Math.floor(Math.random() * this.rows)
-      const colIndex = Math.floor(Math.random() * this.cols)
-      this.grid[rowIndex][colIndex] = this.randomGlyph()
-    }
-
-    for (let rowIndex = 0; rowIndex < this.rows; rowIndex++) {
-      for (let colIndex = 0; colIndex < this.cols; colIndex++) {
-        const offset = this.offsets[rowIndex][colIndex]
-        if (this.hasPointer || this.pointerFrozen || this.hoverRect !== null) {
-          const charX = colIndex * this.charWidth + this.charWidth / 2
-          const { dx, dy, dist } = this.getHoverVector(charX, rowIndex * this.lineHeight + this.lineHeight / 2)
-
-          if (dist < HOVER_RADIUS) {
-            const strength = this.hoverRect
-              ? LINK_REPULSION_STRENGTH
-              : CURSOR_REPULSION_STRENGTH
-            const power = (1 - dist / HOVER_RADIUS) * strength
-            offset.dx += (dx / dist) * power
-            offset.dy += (dy / dist) * power
-          }
-        }
-
-        offset.dx *= DAMPING
-        offset.dy *= DAMPING
-      }
-    }
+    this.mutateGlyphs()
+    this.updateOffsets()
   }
 
   draw(context: CanvasRenderingContext2D): void {
@@ -96,10 +73,9 @@ export class TextSkyBackground {
         const offset = this.offsets[rowIndex][colIndex]
         const x = colIndex * this.charWidth + offset.dx
         const y = rowIndex * this.lineHeight + offset.dy
-        const alpha = this.getAlphaForCell(x, y)
 
         context.fillStyle = '#6fe7fc'
-        context.globalAlpha = alpha
+        context.globalAlpha = this.getAlphaForCell(x, y)
         context.fillText(char, x, y)
       }
     }
@@ -108,12 +84,56 @@ export class TextSkyBackground {
   }
 
   private getAlphaForCell(x: number, y: number): number {
-    if (!this.hasPointer && !this.pointerFrozen && this.hoverRect === null) return 0.08
+    if (!this.isHoverActive()) return 0.08
+
     const { dist } = this.getHoverVector(x, y)
-    return Math.max(0.08, Math.min(0.18, 0.08 + (HOVER_RADIUS - dist) / HOVER_RADIUS * 0.1))
+    const alpha = 0.08 + ((HOVER_RADIUS - dist) / HOVER_RADIUS) * 0.1
+    return Math.max(0.08, Math.min(0.18, alpha))
   }
 
-  private getHoverVector(x: number, y: number): { dx: number; dy: number; dist: number } {
+  private isHoverActive(): boolean {
+    return this.hasPointer || this.pointerFrozen || this.hoverRect !== null
+  }
+
+  private mutateGlyphs(): void {
+    const mutateCount = Math.max(1, Math.floor((this.cols * this.rows) / 120))
+    for (let i = 0; i < mutateCount; i++) {
+      const rowIndex = Math.floor(Math.random() * this.rows)
+      const colIndex = Math.floor(Math.random() * this.cols)
+      this.grid[rowIndex][colIndex] = this.randomGlyph()
+    }
+  }
+
+  private updateOffsets(): void {
+    const hoverActive = this.isHoverActive()
+
+    for (let rowIndex = 0; rowIndex < this.rows; rowIndex++) {
+      for (let colIndex = 0; colIndex < this.cols; colIndex++) {
+        const offset = this.offsets[rowIndex][colIndex]
+        if (!hoverActive) {
+          offset.dx *= DAMPING
+          offset.dy *= DAMPING
+          continue
+        }
+
+        const charX = colIndex * this.charWidth + this.charWidth / 2
+        const charY = rowIndex * this.lineHeight + this.lineHeight / 2
+        const hover = this.getHoverVector(charX, charY)
+
+        if (hover.dist < HOVER_RADIUS) {
+          const strength = this.hoverRect ? LINK_REPULSION_STRENGTH : CURSOR_REPULSION_STRENGTH
+          const power = ((HOVER_RADIUS - hover.dist) / HOVER_RADIUS) * strength
+          offset.dx += (hover.dx / hover.dist) * power
+          offset.dy += (hover.dy / hover.dist) * power
+        }
+
+        offset.dx *= DAMPING
+        offset.dy *= DAMPING
+      }
+    }
+  }
+
+  private getHoverVector(x: number, y: number): HoverVector {
     if (this.hoverRect !== null) {
       const nearestX = Math.min(Math.max(x, this.hoverRect.left), this.hoverRect.right)
       const nearestY = Math.min(Math.max(y, this.hoverRect.top), this.hoverRect.bottom)
@@ -129,12 +149,20 @@ export class TextSkyBackground {
         dist = Math.hypot(dx, dy) || 1
       }
 
-      return { dx, dy, dist }
+      return this.normalizeHoverVector({ dx, dy, dist })
     }
 
     const dx = x - this.mouseX
     const dy = y - this.mouseY
-    return { dx, dy, dist: Math.hypot(dx, dy) }
+    return this.normalizeHoverVector({ dx, dy, dist: Math.hypot(dx, dy) })
+  }
+
+  private normalizeHoverVector(vector: HoverVector): HoverVector {
+    if (vector.dist === 0) {
+      return { dx: 1, dy: 0, dist: 1 }
+    }
+
+    return vector
   }
 
   private createRow(): string[] {

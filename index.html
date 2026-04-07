@@ -8,12 +8,12 @@
     :root {
       color-scheme: dark;
       --bg: #08121c;
-      --surface: rgba(8, 18, 28, 0.95);
+      --surface: rgba(8, 18, 28, 0.92);
       --text: #f6f2df;
       --muted: #dfe7ef;
       --accent: #7fd1ff;
       --accent-strong: #63c1ff;
-      --border: rgba(127, 209, 255, 0.14);
+      --border: rgba(127, 209, 255, 0.18);
     }
 
     *, *::before, *::after {
@@ -55,12 +55,13 @@
       padding: 1rem 2rem;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
+      backdrop-filter: saturate(160%) blur(14px);
       z-index: 10;
     }
 
     .site-brand {
       font-size: 0.95rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       font-weight: 700;
     }
@@ -94,11 +95,11 @@
     }
 
     main {
-      padding-top: 88px;
+      padding-top: 92px;
     }
 
     .hero {
-      min-height: calc(100vh - 88px);
+      min-height: calc(100vh - 92px);
       display: grid;
       place-items: center;
       padding: 3rem 2rem 4rem;
@@ -108,6 +109,14 @@
       max-width: 760px;
     }
 
+    .eyebrow {
+      margin: 0 0 1.2rem;
+      color: var(--accent);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
     .hero-copy h1 {
       margin: 0 0 1rem;
       font-size: clamp(2.75rem, 6vw, 4.5rem);
@@ -115,27 +124,60 @@
     }
 
     .hero-copy p {
-      margin: 0 0 1.5rem;
+      margin: 0 0 1.75rem;
       color: var(--muted);
-      max-width: 38rem;
+      max-width: 40rem;
+      font-size: 1.05rem;
     }
 
-    .hero-copy .button {
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .button,
+    .button-secondary {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
       padding: 0.95rem 1.4rem;
       border-radius: 999px;
-      background: var(--accent);
-      color: var(--bg);
       text-decoration: none;
       font-weight: 700;
-      transition: transform 0.2s ease, background 0.2s ease;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
 
-    .hero-copy .button:hover {
+    .button {
+      background: var(--accent);
+      color: var(--bg);
+      border: 1px solid transparent;
+    }
+
+    .button-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .button:hover,
+    .button-secondary:hover {
       transform: translateY(-1px);
-      background: var(--accent-strong);
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: clamp(1.85rem, 2.4vw, 2.3rem);
+      letter-spacing: -0.04em;
     }
 
     .panel {
@@ -144,77 +186,197 @@
       padding: 4rem 2rem;
     }
 
-    .panel h2 {
-      margin-top: 0;
-      font-size: 2rem;
-      letter-spacing: -0.04em;
-    }
-
     .panel p,
     .panel li {
       color: var(--muted);
     }
 
+    .panel p + p,
+    .panel ul + p,
+    .panel h2 + p {
+      margin-top: 1rem;
+    }
+
     .panel ul {
-      padding-left: 1.2rem;
+      padding-left: 1.35rem;
       margin: 1rem 0 0;
       display: grid;
       gap: 0.75rem;
     }
 
-    .project-list {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .project-card {
-      padding: 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      background: rgba(5, 12, 20, 0.6);
-      backdrop-filter: blur(10px);
-    }
-
-    .project-card h3 {
-      margin: 0 0 0.5rem;
-    }
-
-    .project-card p {
-      margin: 0 0 0.75rem;
-      color: var(--muted);
-    }
-
-    .project-card a {
+    .panel a {
       color: var(--accent);
       text-decoration: none;
     }
 
-    @media (max-width: 720px) {
+    .panel a:hover {
+      color: var(--accent-strong);
+    }
+
+    .skill-grid,
+    .project-list,
+    .timeline-list {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .skill-grid {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      margin-top: 1.5rem;
+    }
+
+    .skill-chip {
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .project-card,
+    .timeline-item {
+      padding: 1.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      background: rgba(5, 12, 20, 0.72);
+      backdrop-filter: blur(12px);
+    }
+
+    .project-card h3,
+    .timeline-item h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.2rem;
+    }
+
+    .project-card p,
+    .timeline-item p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+    }
+
+    .project-meta,
+    .meta {
+      color: rgba(223, 231, 239, 0.78);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .project-links a {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .timeline-list {
+      position: relative;
+      padding-left: 1rem;
+      margin-top: 1rem;
+    }
+
+    .timeline-list::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(127, 209, 255, 0.12);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 1.6rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0.6rem;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(127, 209, 255, 0.08);
+    }
+
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0 0;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .contact-list li {
+      color: var(--muted);
+    }
+
+    .footer {
+      padding: 2rem 2rem 3rem;
+      text-align: center;
+      color: rgba(223, 231, 239, 0.72);
+      font-size: 0.92rem;
+    }
+
+    .footer a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 920px) {
       .site-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
       }
 
       .hero {
         padding-top: 2rem;
       }
 
+      .hero-copy {
+        text-align: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 720px) {
       .site-nav {
-        gap: 0.75rem;
+        gap: 0.85rem;
+      }
+
+      .panel {
+        padding: 3rem 1.5rem;
+      }
+
+      .hero {
+        padding: 2rem 1.5rem 3rem;
       }
     }
   </style>
 </head>
-<body>
+<body class="overlay-links">
   <canvas></canvas>
 
   <header class="site-header">
     <div class="site-brand">Luke T. Vo</div>
     <nav class="site-nav" aria-label="Primary navigation">
       <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
-      <a class="header-action" href="#about">Next section</a>
+      <a class="header-action" href="#contact">Let's talk</a>
     </nav>
   </header>
 
@@ -222,49 +384,120 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">Portfolio website</p>
-        <h1 id="hero-title">Interactive portfolio with a canvas hero background</h1>
-        <p>Showcase work, highlight skills, and navigate the site with a simple header that moves you to the next section.</p>
-        <a class="button" href="#about">Scroll to About</a>
+        <h1 id="hero-title">Crafting fast, polished web experiences with canvas-led interaction.</h1>
+        <p>I'm a software developer building web and interactive applications with TypeScript, Vite, and custom canvas visuals. This site blends a responsive portfolio layout with an animated hero background.</p>
+        <div class="hero-actions">
+          <a class="button" href="#projects">View projects</a>
+          <a class="button-secondary" href="#about">Learn more</a>
+        </div>
       </div>
     </section>
 
     <section id="about" class="panel" aria-labelledby="about-title">
-      <h2 id="about-title">About</h2>
-      <p>I'm building a lightweight portfolio using HTML, CSS, TypeScript, and Vite. This site pairs an animated canvas background with accessible scrolling navigation.</p>
-      <p>Connect with me on <a href="https://www.linkedin.com/in/ltv0" target="_blank" rel="noreferrer noopener">LinkedIn</a> to see my latest projects and professional updates.</p>
+      <div class="section-header">
+        <h2 id="about-title">About</h2>
+        <span>Full-stack portfolio with interactive design</span>
+      </div>
+      <p>I'm focused on building lightweight, accessible web applications that pair clean UI with compelling visuals. My work includes portfolio sites, browser-based games, and developer tools that highlight strong UX and fast performance.</p>
+      <p>Connect with me on <a href="https://www.linkedin.com/in/ltv0" target="_blank" rel="noreferrer noopener">LinkedIn</a> to see my latest updates and collaborations.</p>
       <ul>
-        <li>Single-page layout with semantic sections</li>
-        <li>Responsive design for desktop and mobile</li>
-        <li>Fixed header navigation for easy movement between sections</li>
+        <li>Single-page portfolio architecture for fast navigation</li>
+        <li>Responsive styling and mobile-first layout</li>
+        <li>Canvas-powered background animation that feels polished and lightweight</li>
       </ul>
     </section>
 
+    <section id="skills" class="panel" aria-labelledby="skills-title">
+      <div class="section-header">
+        <h2 id="skills-title">Skills</h2>
+        <span>Tools, languages, and frameworks</span>
+      </div>
+      <div class="skill-grid">
+        <div class="skill-chip">TypeScript</div>
+        <div class="skill-chip">Vite</div>
+        <div class="skill-chip">HTML &amp; CSS</div>
+        <div class="skill-chip">Canvas</div>
+        <div class="skill-chip">JavaScript</div>
+        <div class="skill-chip">UX / UI</div>
+        <div class="skill-chip">Git &amp; GitHub</div>
+        <div class="skill-chip">Responsive design</div>
+      </div>
+    </section>
+
+    <section id="experience" class="panel" aria-labelledby="experience-title">
+      <div class="section-header">
+        <h2 id="experience-title">Experience</h2>
+        <span>Projects, hackathons, and developer work</span>
+      </div>
+      <div class="timeline-list">
+        <article class="timeline-item">
+          <h3>Interactive portfolio design</h3>
+          <p>Built a modern portfolio experience with a custom canvas hero background, responsive sections, and polished navigation.</p>
+          <div class="meta">Web development · UX · TypeScript</div>
+        </article>
+        <article class="timeline-item">
+          <h3>Hackathon game experience</h3>
+          <p>Created an immersive browser-based game with command-line inspired visuals and smooth interaction patterns.</p>
+          <div class="meta">Game design · Creative coding · JavaScript</div>
+        </article>
+        <article class="timeline-item">
+          <h3>Devpost project showcase</h3>
+          <p>Delivered a polished hackathon demo with live data integration, project storytelling, and clean presentation.</p>
+          <div class="meta">Project delivery · Product UX · Collaboration</div>
+        </article>
+      </div>
+    </section>
+
     <section id="projects" class="panel" aria-labelledby="projects-title">
-      <h2 id="projects-title">Projects</h2>
+      <div class="section-header">
+        <h2 id="projects-title">Projects</h2>
+        <span>Featured work and demos</span>
+      </div>
       <div class="project-list">
-        <div class="project-card">
+        <article class="project-card">
           <h3>Weather Report</h3>
-          <p>A Devpost project with live data and a polished interactive UI.</p>
-          <a href="https://devpost.com/software/weather-report-2aew5f" target="_blank" rel="noreferrer noopener">View Devpost project</a>
-        </div>
-        <div class="project-card">
-          <h3>Hackathon Game</h3>
-          <p>Command-line inspired game built for a hackathon, featuring custom mechanics and immersive visuals.</p>
-          <a href="http://ltv0.me/blaster-hack-commandline-game/" target="_blank" rel="noreferrer noopener">Open game demo</a>
-        </div>
+          <p>A Devpost entry that presents live weather insights with an elegant UI and interactive city search.</p>
+          <div class="project-meta">TypeScript · API integration · Responsive app</div>
+          <div class="project-links">
+            <a href="https://devpost.com/software/weather-report-2aew5f" target="_blank" rel="noreferrer noopener">View Devpost</a>
+          </div>
+        </article>
+        <article class="project-card">
+          <h3>Hackathon game</h3>
+          <p>A browser-based game built to evoke classic command-line aesthetics with modern interaction and immersive visuals.</p>
+          <div class="project-meta">Canvas · Animation · Game mechanics</div>
+          <div class="project-links">
+            <a href="http://ltv0.me/blaster-hack-commandline-game/" target="_blank" rel="noreferrer noopener">Open demo</a>
+          </div>
+        </article>
+        <article class="project-card">
+          <h3>Personal portfolio</h3>
+          <p>This site itself is a portfolio example, combining clean structure, accessible navigation, and a custom background effect.</p>
+          <div class="project-meta">Frontend · Design · Deployment</div>
+          <div class="project-links">
+            <a href="https://github.com/ltv0/website-portfolio" target="_blank" rel="noreferrer noopener">View source</a>
+          </div>
+        </article>
       </div>
     </section>
 
     <section id="contact" class="panel" aria-labelledby="contact-title">
-      <h2 id="contact-title">Contact</h2>
-      <p>Reach out via GitHub, LinkedIn, or email to discuss collaborations and opportunities.</p>
-      <ul>
+      <div class="section-header">
+        <h2 id="contact-title">Contact</h2>
+        <span>Let's build something together</span>
+      </div>
+      <p>Reach out by email or connect on GitHub and LinkedIn. I'm available for freelance work, collaborative projects, and open-source contributions.</p>
+      <ul class="contact-list">
         <li>GitHub: <a href="https://github.com/ltv0" target="_blank" rel="noreferrer noopener">github.com/ltv0</a></li>
         <li>LinkedIn: <a href="https://www.linkedin.com/in/ltv0" target="_blank" rel="noreferrer noopener">linkedin.com/in/ltv0</a></li>
         <li>Email: <a href="mailto:hello@ltv0.me">hello@ltv0.me</a></li>
       </ul>
     </section>
   </main>
+
+  <footer class="footer">
+    <p>© 2026 Luke T. Vo · Built with Vite, TypeScript, and canvas animation</p>
+  </footer>
 
   <script type="module" src="/src/main.ts"></script>
 </body>
