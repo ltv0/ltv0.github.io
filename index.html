@@ -50,17 +50,18 @@
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 1rem;
-      padding: 1rem 2rem;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      background: rgba(8, 18, 28, 0.75);
+      border-bottom: 1px solid rgba(127, 209, 255, 0.12);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
       backdrop-filter: saturate(160%) blur(14px);
       z-index: 10;
     }
 
     .site-brand {
-      font-size: 0.95rem;
+      font-size: clamp(0.95rem, 1.25vw, 1.05rem);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       font-weight: 700;
@@ -71,6 +72,12 @@
       gap: 1.25rem;
       flex-wrap: wrap;
       align-items: center;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .site-nav a {
+      font-size: clamp(0.88rem, 1.1vw, 0.95rem);
     }
 
     .site-nav a,
@@ -79,6 +86,37 @@
       text-decoration: none;
       font-size: 0.92rem;
       transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .header-action {
+      display: inline-flex;
+      flex-shrink: 0;
+      position: absolute;
+      right: 1.5rem;
+    }
+
+    @media (max-width: 920px) {
+      .header-action {
+        position: static;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .header-action {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding: 0.95rem 1rem;
+        border-radius: 999px;
+        text-align: center;
+      }
+    }
+
+    @media (min-width: 721px) {
+      .site-nav a[href="#contact"] {
+        display: none;
+      }
     }
 
     .site-nav a:hover,
@@ -95,7 +133,7 @@
     }
 
     main {
-      padding-top: 92px;
+      padding-top: 82px;
     }
 
     .hero {
@@ -186,6 +224,21 @@
       padding: 4rem 2rem;
     }
 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    #about-title,
+    #contact-title,
+    #about,
+    #about *,
+    #contact,
+    #contact * {
+      text-shadow: 0 4px 18px rgba(127, 209, 255, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
     .panel p,
     .panel li {
       color: var(--muted);
@@ -221,11 +274,14 @@
     }
 
     .skill-grid {
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      justify-items: center;
       margin-top: 1.5rem;
     }
 
     .skill-chip {
+      width: 100%;
+      max-width: 240px;
       padding: 0.85rem 1rem;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 14px;
@@ -233,6 +289,18 @@
       color: var(--text);
       font-size: 0.95rem;
       text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .skill-grid {
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .skill-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .project-card,
@@ -351,8 +419,20 @@
     }
 
     @media (max-width: 720px) {
+      .site-header {
+        padding: 1rem 1.25rem;
+      }
+
+      .site-brand {
+        font-size: 0.95rem;
+      }
+
       .site-nav {
-        gap: 0.85rem;
+        gap: 0.75rem;
+      }
+
+      .site-nav a {
+        font-size: 0.88rem;
       }
 
       .panel {
@@ -375,9 +455,8 @@
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-      <a class="header-action" href="#contact">Let's talk</a>
     </nav>
+    <a class="header-action" href="#contact">Let's talk</a>
   </header>
 
   <main>
@@ -410,15 +489,15 @@
     <section id="skills" class="panel" aria-labelledby="skills-title">
       <div class="section-header">
         <h2 id="skills-title">Skills</h2>
-        <span>Tools, languages, and frameworks</span>
+        <span>Tools, languages, and the @chenglou/pretext renderer</span>
       </div>
       <div class="skill-grid">
         <div class="skill-chip">TypeScript</div>
-        <div class="skill-chip">Vite</div>
-        <div class="skill-chip">HTML &amp; CSS</div>
-        <div class="skill-chip">Canvas</div>
         <div class="skill-chip">JavaScript</div>
-        <div class="skill-chip">UX / UI</div>
+        <div class="skill-chip">HTML &amp; CSS</div>
+        <div class="skill-chip">Vite</div>
+        <div class="skill-chip">Canvas</div>
+        <div class="skill-chip">Pretext</div>
         <div class="skill-chip">Git &amp; GitHub</div>
         <div class="skill-chip">Responsive design</div>
       </div>
@@ -483,7 +562,7 @@
 
     <section id="contact" class="panel" aria-labelledby="contact-title">
       <div class="section-header">
-        <h2 id="contact-title">Contact</h2>
+        <h2 id="contact-title">Lets talk</h2>
         <span>Let's build something together</span>
       </div>
       <p>Reach out by email or connect on GitHub and LinkedIn. I'm available for freelance work, collaborative projects, and open-source contributions.</p>

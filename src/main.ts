@@ -91,6 +91,76 @@ function onLinkPointerLeave(): void {
   background.setHoverRect(null)
 }
 
+function getTouchPoint(event: TouchEvent): Point | null {
+  const touch = event.touches[0] || event.changedTouches[0]
+  if (!touch) return null
+  const canvas = getCanvas()
+  if (!canvas) return null
+
+  return getCanvasPoint(canvas, touch.clientX, touch.clientY)
+}
+
+function getTouchLink(event: TouchEvent): HTMLAnchorElement | null {
+  const touch = event.touches[0] || event.changedTouches[0]
+  if (!touch) return null
+
+  const element = document.elementFromPoint(touch.clientX, touch.clientY)
+  return element?.closest<HTMLAnchorElement>('.overlay-links a') ?? null
+}
+
+function onTouchStart(event: TouchEvent): void {
+  const pointer = getTouchPoint(event)
+  if (!pointer) return
+
+  if (isInsideCanvas(pointer, getCanvas()!)) {
+    background.setPointer(pointer.x, pointer.y)
+  }
+
+  updateHoverRectFromLink(getTouchLink(event))
+}
+
+function onTouchMove(event: TouchEvent): void {
+  const pointer = getTouchPoint(event)
+  if (!pointer) return
+
+  const canvas = getCanvas()
+  if (!canvas) return
+
+  if (isInsideCanvas(pointer, canvas)) {
+    background.setPointer(pointer.x, pointer.y)
+  } else {
+    background.clearPointer()
+  }
+
+  updateHoverRectFromLink(getTouchLink(event))
+}
+
+function onTouchEnd(): void {
+  background.clearPointer()
+  background.setHoverRect(null)
+}
+
+function getHeaderRuleLayout(): { x: number; y: number; width: number } {
+  const canvas = getCanvas()
+  if (!canvas) {
+    return { x: 40, y: 84, width: Math.max(120, W - 80) }
+  }
+
+  const header = document.querySelector<HTMLElement>('.site-header')
+  if (!header) {
+    return { x: 40, y: 84, width: Math.max(120, W - 80) }
+  }
+
+  const headerRect = getCanvasRect(canvas, header.getBoundingClientRect())
+  const minRuleWidth = 120
+  const ruleMargin = 24
+  const maxWidth = Math.min(W - ruleMargin * 2, Math.max(minRuleWidth, headerRect.width - 32))
+  const x = Math.max(ruleMargin, headerRect.left + (headerRect.width - maxWidth) / 2)
+  const y = Math.min(H - 40, Math.max(ruleMargin, headerRect.bottom - 10))
+
+  return { x, y, width: maxWidth }
+}
+
 function drawHeading(): void {
   if (!ctx) return
 
@@ -98,12 +168,14 @@ function drawHeading(): void {
   const titleFont = fnt('monospace', 34, 'bold')
   const titleLineHeight = 40
 
+  const rule = getHeaderRuleLayout()
+
   renderer.drawText(ctx, title, titleFont, titleLineHeight, W / 2, 36, {
     color: '#f6f2df',
     align: 'center',
   })
 
-  renderer.drawHRule(ctx, '-', titleFont, titleLineHeight, 40, 84, W - 80, {
+  renderer.drawHRule(ctx, '-', titleFont, titleLineHeight, rule.x, rule.y, rule.width, {
     color: '#7fd1ff',
   })
 }
@@ -134,6 +206,10 @@ function init(): void {
 
   document.addEventListener('pointermove', onPointerMove)
   document.addEventListener('pointerleave', onPointerLeave)
+  document.addEventListener('touchstart', onTouchStart, { passive: true })
+  document.addEventListener('touchmove', onTouchMove, { passive: true })
+  document.addEventListener('touchend', onTouchEnd, { passive: true })
+  document.addEventListener('touchcancel', onTouchEnd, { passive: true })
 
   document.querySelectorAll<HTMLAnchorElement>('.overlay-links a').forEach(attachLinkHoverHandlers)
 
