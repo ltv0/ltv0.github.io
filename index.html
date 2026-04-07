@@ -50,14 +50,24 @@
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 1rem;
-      padding: 0.75rem 1.5rem;
+      padding: 1rem 2rem;
       background: rgba(8, 18, 28, 0.75);
       border-bottom: 1px solid rgba(127, 209, 255, 0.12);
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
       backdrop-filter: saturate(160%) blur(14px);
       z-index: 10;
+    }
+
+    @media (min-width: 920px) {
+      .site-header {
+        padding: 1.25rem 2.5rem;
+      }
+
+      .site-nav {
+        justify-content: flex-start;
+      }
     }
 
     .site-brand {
@@ -72,8 +82,10 @@
       gap: 1.25rem;
       flex-wrap: wrap;
       align-items: center;
-      flex: 1 1 auto;
+      flex: 0 1 auto;
+      margin-left: auto;
       min-width: 0;
+      justify-content: flex-end;
     }
 
     .site-nav a {
@@ -91,14 +103,19 @@
     .header-action {
       display: inline-flex;
       flex-shrink: 0;
-      position: absolute;
-      right: 1.5rem;
+      margin-left: 1rem;
+      position: static;
     }
 
     @media (max-width: 920px) {
       .header-action {
         position: static;
         margin-left: 0;
+      }
+
+      .site-nav {
+        margin-left: 0;
+        justify-content: flex-start;
       }
     }
 
@@ -133,7 +150,7 @@
     }
 
     main {
-      padding-top: 82px;
+      padding-top: 104px;
     }
 
     .hero {
