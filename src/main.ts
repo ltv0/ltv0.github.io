@@ -42,11 +42,20 @@ function resizeCanvas(): void {
   const canvas = getCanvas()
   if (!canvas) return
 
-  const width = Math.max(300, canvas.clientWidth || window.innerWidth)
-  const height = Math.max(200, canvas.clientHeight || window.innerHeight)
+  const viewport = window.visualViewport
+  const rect = canvas.getBoundingClientRect()
+  const width = Math.max(
+    300,
+    viewport?.width ?? rect.width ?? window.innerWidth,
+  )
+  const height = Math.max(
+    200,
+    viewport?.height ?? rect.height ?? window.innerHeight,
+  )
 
   updateViewport(width, height)
   background.resize(width, height)
+  resizeHeroText()
 }
 
 function updateHoverRectFromLink(link: HTMLAnchorElement | null): void {
@@ -109,6 +118,35 @@ function getTouchLink(event: TouchEvent): HTMLAnchorElement | null {
   return element?.closest<HTMLAnchorElement>('.overlay-links a') ?? null
 }
 
+function getOverlayLinksRect(): DOMRect | null {
+  const canvas = getCanvas()
+  if (!canvas) return null
+
+  const overlay = document.querySelector<HTMLElement>('.overlay-links')
+  if (!overlay) return null
+
+  return getCanvasRect(canvas, overlay.getBoundingClientRect())
+}
+
+function getOverlayTextRegion(): DOMRect {
+  const canvas = getCanvas()
+  if (!canvas) {
+    return new DOMRect(24, 0, W - 48, 0)
+  }
+
+  const overlayRect = getOverlayLinksRect()
+  if (overlayRect) {
+    return overlayRect
+  }
+
+  const header = document.querySelector<HTMLElement>('.site-header')
+  if (!header) {
+    return new DOMRect(24, 0, W - 48, 0)
+  }
+
+  return getCanvasRect(canvas, header.getBoundingClientRect())
+}
+
 function onTouchStart(event: TouchEvent): void {
   const pointer = getTouchPoint(event)
   if (!pointer) return
@@ -147,17 +185,12 @@ function getHeaderRuleLayout(): { x: number; y: number; width: number } {
     return { x: 40, y: 84, width: Math.max(120, W - 80) }
   }
 
-  const header = document.querySelector<HTMLElement>('.site-header')
-  if (!header) {
-    return { x: 40, y: 84, width: Math.max(120, W - 80) }
-  }
-
-  const headerRect = getCanvasRect(canvas, header.getBoundingClientRect())
+  const region = getOverlayTextRegion()
   const minRuleWidth = 120
   const ruleMargin = 24
-  const maxWidth = Math.min(W - ruleMargin * 2, Math.max(minRuleWidth, headerRect.width - 32))
-  const x = Math.max(ruleMargin, headerRect.left + (headerRect.width - maxWidth) / 2)
-  const y = Math.min(H - 40, Math.max(ruleMargin, headerRect.bottom - 10))
+  const maxWidth = Math.min(W - ruleMargin * 2, Math.max(minRuleWidth, region.width - 32))
+  const x = Math.max(ruleMargin, region.left + (region.width - maxWidth) / 2)
+  const y = Math.min(H - 40, Math.max(ruleMargin, region.bottom - 10))
 
   return { x, y, width: maxWidth }
 }
@@ -171,22 +204,113 @@ function getHeaderTitle(): string {
   return document.querySelector<HTMLElement>('.site-brand')?.textContent?.trim() ?? 'Portfolio'
 }
 
+function getFittingTitleFont(title: string, maxWidth: number) {
+  const maxFontSize = 40
+  const minFontSize = 16
+  const lineHeightRatio = 1.3
+
+  for (let fontSize = maxFontSize; fontSize >= minFontSize; fontSize -= 1) {
+    const font = fnt('monospace', fontSize, 'bold')
+    const width = renderer.measureNaturalWidth(title, font, {
+      whiteSpace: 'normal',
+    })
+
+    if (width <= maxWidth) {
+      return {
+        font,
+        fontSize,
+        lineHeight: Math.round(fontSize * lineHeightRatio),
+      }
+    }
+  }
+
+  return {
+    font: fnt('monospace', minFontSize, 'bold'),
+    fontSize: minFontSize,
+    lineHeight: Math.round(minFontSize * lineHeightRatio),
+  }
+}
+
+function getFittingBlockFont(
+  text: string,
+  maxWidth: number,
+  maxFontSize: number,
+  minFontSize: number,
+  fontWeight: string | number = 'normal',
+  lineHeightRatio = 1.4,
+) {
+  for (let fontSize = maxFontSize; fontSize >= minFontSize; fontSize -= 1) {
+    const font = fnt('monospace', fontSize, fontWeight)
+    const stats = renderer.measureLineStats(text, font, maxWidth, {
+      whiteSpace: 'normal',
+    })
+
+    if (stats.maxLineWidth <= maxWidth) {
+      return {
+        font,
+        fontSize,
+        lineHeight: Math.round(fontSize * lineHeightRatio),
+      }
+    }
+  }
+
+  return {
+    font: fnt('monospace', minFontSize, fontWeight),
+    fontSize: minFontSize,
+    lineHeight: Math.round(minFontSize * lineHeightRatio),
+  }
+}
+
+function resizeHeroText(): void {
+  const heroCopy = document.querySelector<HTMLElement>('.hero-copy')
+  if (!heroCopy) return
+
+  const heroStyles = window.getComputedStyle(heroCopy)
+  const horizontalPadding = parseFloat(heroStyles.paddingLeft || '0') + parseFloat(heroStyles.paddingRight || '0')
+  const availableWidth = Math.max(120, heroCopy.clientWidth - horizontalPadding)
+
+  const title = heroCopy.querySelector<HTMLHeadingElement>('h1')
+  if (title && title.textContent) {
+    const titleMeta = getFittingBlockFont(title.textContent.trim(), availableWidth, 42, 18, 'bold', 1.08)
+    title.style.fontSize = `${titleMeta.fontSize}px`
+    title.style.lineHeight = `${titleMeta.lineHeight}px`
+  }
+
+  const paragraph = heroCopy.querySelector<HTMLParagraphElement>('p')
+  if (paragraph && paragraph.textContent) {
+    const paragraphMeta = getFittingBlockFont(paragraph.textContent.trim(), availableWidth, 18, 12, 'normal', 1.6)
+    paragraph.style.fontSize = `${paragraphMeta.fontSize}px`
+    paragraph.style.lineHeight = `${paragraphMeta.lineHeight}px`
+  }
+
+  heroCopy.querySelectorAll<HTMLAnchorElement>('.button, .button-secondary').forEach(button => {
+    const buttonText = button.textContent?.trim() ?? ''
+    if (!buttonText) return
+
+    const buttonStyles = window.getComputedStyle(button)
+    const buttonPadding = parseFloat(buttonStyles.paddingLeft || '0') + parseFloat(buttonStyles.paddingRight || '0')
+    const buttonWidth = Math.max(80, button.clientWidth - buttonPadding)
+    const buttonMeta = getFittingBlockFont(buttonText, buttonWidth, 18, 12, '700', 1.15)
+    button.style.fontSize = `${buttonMeta.fontSize}px`
+    button.style.lineHeight = `${buttonMeta.lineHeight}px`
+  })
+}
+
 function drawHeading(): void {
   if (!ctx) return
 
   const canvas = getCanvas()
   if (!canvas) return
 
+  const overlayRect = getOverlayLinksRect()
   const header = document.querySelector<HTMLElement>('.site-header')
   const title = getHeaderTitle()
-  const titleFont = fnt('monospace', 28, 'bold')
-  const titleLineHeight = 36
+  const textRegion = overlayRect ?? (header ? getCanvasRect(canvas, header.getBoundingClientRect()) : new DOMRect(24, 0, W - 48, 0))
+  const maxTextWidth = Math.max(120, Math.min(textRegion.width - 32, W - 48))
+  const headerX = Math.max(24, textRegion.left + 16)
 
-  const headerRect = header ? getCanvasRect(canvas, header.getBoundingClientRect()) : new DOMRect(24, 0, W - 48, 0)
-  const maxTextWidth = Math.max(120, Math.min(headerRect.width - 32, W - 80))
-  const headerX = header ? Math.max(24, headerRect.left + 8) : 40
-
-  const titleBlock = renderer.getBlock(title, titleFont, titleLineHeight, maxTextWidth, {
+  const titleFontMeta = getFittingTitleFont(title, maxTextWidth)
+  const titleBlock = renderer.getBlock(title, titleFontMeta.font, titleFontMeta.lineHeight, maxTextWidth, {
     whiteSpace: 'normal',
   })
 
@@ -196,17 +320,17 @@ function drawHeading(): void {
     color: getCssVar('--text', '#f6f2df'),
   })
 
-  const titleStats = renderer.measureLineStats(title, titleFont, maxTextWidth, {
+  const titleStats = renderer.measureLineStats(title, titleFontMeta.font, maxTextWidth, {
     whiteSpace: 'normal',
   })
   const ruleWidth = Math.min(maxTextWidth, Math.max(titleStats.maxLineWidth + 16, 120))
-  const topRuleY = Math.max(8, titleY - titleLineHeight + 8)
+  const topRuleY = Math.max(8, titleY - titleFontMeta.lineHeight + 8)
   const rule = getHeaderRuleLayout()
 
-  renderer.drawHRule(ctx, '-', titleFont, titleLineHeight, headerX, topRuleY, ruleWidth, {
+  renderer.drawHRule(ctx, '-', titleFontMeta.font, titleFontMeta.lineHeight, headerX, topRuleY, ruleWidth, {
     color: getCssVar('--accent-strong', '#7fd1ff'),
   })
-  renderer.drawHRule(ctx, '-', titleFont, titleLineHeight, rule.x, rule.y, rule.width, {
+  renderer.drawHRule(ctx, '-', titleFontMeta.font, titleFontMeta.lineHeight, rule.x, rule.y, rule.width, {
     color: getCssVar('--accent', '#9ba7ff'),
   })
 
@@ -251,6 +375,8 @@ function init(): void {
 
   window.addEventListener('resize', resizeCanvas)
   window.addEventListener('orientationchange', resizeCanvas)
+  window.visualViewport?.addEventListener('resize', resizeCanvas)
+  window.visualViewport?.addEventListener('scroll', resizeCanvas)
   requestAnimationFrame(loop)
 }
 
