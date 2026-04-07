@@ -196,7 +196,9 @@ function drawHeading(): void {
     color: getCssVar('--text', '#f6f2df'),
   })
 
-  const titleStats = renderer.measureLineStats(title, titleFont, maxTextWidth, 'normal')
+  const titleStats = renderer.measureLineStats(title, titleFont, maxTextWidth, {
+    whiteSpace: 'normal',
+  })
   const ruleWidth = Math.min(maxTextWidth, Math.max(titleStats.maxLineWidth + 16, 120))
   const topRuleY = Math.max(8, titleY - titleLineHeight + 8)
   const rule = getHeaderRuleLayout()
