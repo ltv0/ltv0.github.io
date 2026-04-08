@@ -254,34 +254,6 @@
       pointer-events: none;
     }
 
-    .top-divider {
-      position: fixed;
-      top: var(--header-height);
-      left: 0;
-      right: 0;
-      height: 12px;
-      background-image: repeating-linear-gradient(
-        to right,
-        rgba(255,255,255,0) 0px,
-        rgba(255,255,255,0) 8px,
-        rgba(255,255,255,0.14) 8px,
-        rgba(255,255,255,0.14) 12px
-      );
-      background-repeat: repeat-x;
-      background-position: center;
-      opacity: 0.95;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
-      z-index: 9;
-      pointer-events: none;
-    }
-
-    @media (max-width: 720px) {
-      .top-divider {
-        top: auto;
-        bottom: 0;
-      }
-    }
-
     .site-header {
       position: fixed;
       left: 0;
@@ -304,7 +276,17 @@
 
     @media (min-width: 920px) {
       .site-header {
-        padding: 0.8rem 2.5rem;
+        padding: 1.2rem 3rem;
+      }
+
+      .site-brand {
+        font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      }
+
+      .site-nav a,
+      .header-action,
+      .theme-toggle {
+        font-size: clamp(0.98rem, 1.15vw, 1.08rem);
       }
 
       .site-nav {
@@ -313,7 +295,7 @@
     }
 
     .site-brand {
-      font-size: clamp(0.95rem, 1.25vw, 1.05rem);
+      font-size: clamp(1rem, 1.3vw, 1.1rem);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       font-weight: 700;
@@ -340,9 +322,7 @@
       }
 
       .site-nav {
-        flex-wrap: wrap;
-        overflow-x: hidden;
-        gap: 1rem;
+        display: none;
       }
 
       .site-nav a {
@@ -351,19 +331,25 @@
     }
 
     .site-nav a {
-      font-size: clamp(0.88rem, 1.1vw, 0.95rem);
+      font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+      color: var(--accent);
+      transition: color 0.2s ease, transform 0.2s ease;
     }
 
     a {
       text-decoration: underline;
     }
 
-    .site-nav a,
     .header-action,
     .theme-toggle {
       color: var(--accent);
       font-size: clamp(0.78rem, 0.9vw, 0.92rem);
       transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .theme-toggle .theme-toggle-label {
+      font-size: inherit;
+      white-space: nowrap;
     }
 
     .header-action {
@@ -865,6 +851,16 @@
       line-height: 1.05;
     }
 
+    @media (min-width: 920px) {
+      .hero-copy h1 {
+        font-size: clamp(2.6rem, 4.2vw, 4.8rem);
+      }
+
+      .hero-copy p {
+        font-size: clamp(1rem, 1.9vw, 1.15rem);
+      }
+    }
+
     .hero-copy p {
       margin: 0 0 1.75rem;
       color: var(--muted);
@@ -1194,10 +1190,9 @@
       }
     }
   </style>
-  <script type="module" crossorigin src="./assets/index-BypFOF79.js"></script>
+  <script type="module" crossorigin src="./assets/index-C4ms7BBk.js"></script>
 </head>
 <body class="overlay-links">
-  <canvas></canvas>
 
   <header class="site-header">
     <div class="site-brand">Luke T. Vo</div>
@@ -1225,6 +1220,7 @@
     </div>
     <a class="header-action" href="#contact">Let's talk</a>
   </header>
+  <canvas></canvas>
 
   <main>
     <section class="hero" aria-labelledby="hero-title">

@@ -123,7 +123,7 @@ function getOverlayLinksRect(): DOMRect | null {
   if (!canvas) return null
 
   const overlay = document.querySelector<HTMLElement>('.overlay-links')
-  if (!overlay) return null
+  if (!overlay || overlay === document.body || overlay === document.documentElement) return null
 
   return getCanvasRect(canvas, overlay.getBoundingClientRect())
 }
@@ -185,14 +185,22 @@ function getHeaderRuleLayout(): { x: number; y: number; width: number } {
     return { x: 40, y: 84, width: Math.max(120, W - 80) }
   }
 
-  const region = getOverlayTextRegion()
   const minRuleWidth = 120
   const ruleMargin = 24
-  const maxWidth = Math.min(W - ruleMargin * 2, Math.max(minRuleWidth, region.width - 32))
-  const x = Math.max(ruleMargin, region.left + (region.width - maxWidth) / 2)
+  const maxWidth = Math.min(W - ruleMargin * 2, Math.max(minRuleWidth, W - 48))
+  const x = Math.max(ruleMargin, (W - maxWidth) / 2)
+
+  if (!isDesktopView()) {
+    const y = Math.max(ruleMargin, H - 24)
+    return { x, y, width: maxWidth }
+  }
+
+  const region = getOverlayTextRegion()
+  const regionWidth = Math.max(minRuleWidth, region.width - 32)
+  const regionX = Math.max(ruleMargin, region.left + (region.width - Math.min(maxWidth, regionWidth)) / 2)
   const y = Math.min(H - 40, Math.max(ruleMargin, region.bottom - 10))
 
-  return { x, y, width: maxWidth }
+  return { x: regionX, y, width: Math.min(maxWidth, regionWidth) }
 }
 
 function getCssVar(name: string, fallback = ''): string {
@@ -202,6 +210,22 @@ function getCssVar(name: string, fallback = ''): string {
 
 function getHeaderTitle(): string {
   return document.querySelector<HTMLElement>('.site-brand')?.textContent?.trim() ?? 'Portfolio'
+}
+
+function isDesktopView(): boolean {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return true
+  }
+
+  return window.matchMedia('(min-width: 900px)').matches
+}
+
+function getHeadingY(titleBlock: { height: number }, textRegion: DOMRect): number {
+  if (isDesktopView()) {
+    return Math.max(textRegion.bottom + 14, 24)
+  }
+
+  return Math.max(H - titleBlock.height - 24, textRegion.bottom + 14)
 }
 
 function getFittingTitleFont(title: string, maxWidth: number) {
@@ -302,42 +326,15 @@ function drawHeading(): void {
   const canvas = getCanvas()
   if (!canvas) return
 
-  const overlayRect = getOverlayLinksRect()
   const header = document.querySelector<HTMLElement>('.site-header')
-  const title = getHeaderTitle()
-  const textRegion = overlayRect ?? (header ? getCanvasRect(canvas, header.getBoundingClientRect()) : new DOMRect(24, 0, W - 48, 0))
+  const textRegion = header ? getCanvasRect(canvas, header.getBoundingClientRect()) : new DOMRect(24, 0, W - 48, 0)
   const maxTextWidth = Math.max(120, Math.min(textRegion.width - 32, W - 48))
-  const headerX = Math.max(24, textRegion.left + 16)
-
-  const titleFontMeta = getFittingTitleFont(title, maxTextWidth)
-  const titleBlock = renderer.getBlock(title, titleFontMeta.font, titleFontMeta.lineHeight, maxTextWidth, {
-    whiteSpace: 'normal',
-  })
-
-  const titleY = 18
-
-  renderer.drawBlock(ctx, titleBlock, headerX, titleY, {
-    color: getCssVar('--text', '#f6f2df'),
-  })
-
-  const titleStats = renderer.measureLineStats(title, titleFontMeta.font, maxTextWidth, {
-    whiteSpace: 'normal',
-  })
-  const ruleWidth = Math.min(maxTextWidth, Math.max(titleStats.maxLineWidth + 16, 120))
-  const topRuleY = Math.max(8, titleY - titleFontMeta.lineHeight + 8)
   const rule = getHeaderRuleLayout()
+  const titleFontMeta = getFittingTitleFont(getHeaderTitle(), maxTextWidth)
 
-  renderer.drawHRule(ctx, '-', titleFontMeta.font, titleFontMeta.lineHeight, headerX, topRuleY, ruleWidth, {
-    color: getCssVar('--accent-strong', '#7fd1ff'),
-  })
   renderer.drawHRule(ctx, '-', titleFontMeta.font, titleFontMeta.lineHeight, rule.x, rule.y, rule.width, {
     color: getCssVar('--accent', '#9ba7ff'),
   })
-
-  // Dynamic header layout uses Pretext line measurement helpers so the title
-  // and subtitle wrap naturally as the canvas or header region resizes.
-  // The unused Pretext features in src/pretext-unused-features.md are a good
-  // future reference if we need variable-width line-by-line layout or locale-aware wrapping.
 }
 
 function drawFrame(): void {
