@@ -12,8 +12,10 @@ function getCanvas(): HTMLCanvasElement | null {
 
 function getCanvasPoint(canvas: HTMLCanvasElement, clientX: number, clientY: number): Point {
   const rect = canvas.getBoundingClientRect()
-  const scaleX = canvas.width / rect.width
-  const scaleY = canvas.height / rect.height
+  // Pointer/touch client coordinates are expressed in CSS pixels.
+  // Map into the logical viewport used for rendering (W/H), not backing pixels.
+  const scaleX = rect.width > 0 ? W / rect.width : 1
+  const scaleY = rect.height > 0 ? H / rect.height : 1
 
   return {
     x: (clientX - rect.left) * scaleX,
@@ -23,8 +25,8 @@ function getCanvasPoint(canvas: HTMLCanvasElement, clientX: number, clientY: num
 
 function getCanvasRect(canvas: HTMLCanvasElement, domRect: DOMRect): DOMRect {
   const rect = canvas.getBoundingClientRect()
-  const scaleX = canvas.width / rect.width
-  const scaleY = canvas.height / rect.height
+  const scaleX = rect.width > 0 ? W / rect.width : 1
+  const scaleY = rect.height > 0 ? H / rect.height : 1
 
   return new DOMRect(
     (domRect.left - rect.left) * scaleX,
@@ -151,7 +153,10 @@ function onTouchStart(event: TouchEvent): void {
   const pointer = getTouchPoint(event)
   if (!pointer) return
 
-  if (isInsideCanvas(pointer, getCanvas()!)) {
+  const canvas = getCanvas()
+  if (!canvas) return
+
+  if (isInsideCanvas(pointer, canvas)) {
     background.setPointer(pointer.x, pointer.y, TOUCH_REPULSION_STRENGTH)
   }
 
