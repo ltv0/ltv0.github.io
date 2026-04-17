@@ -62,6 +62,10 @@ If you prefer to run the workflow manually, open the Actions tab in GitHub, sele
 - If you use a custom domain, keep or update the `CNAME` file in the repository root.
 - Confirm GitHub Pages is set to use GitHub Actions deployment in your repository settings if it is not already configured.
 
+## License
+
+This repository is licensed under the MIT License. See `LICENSE` for details.
+
 ## Notes
 
 - The site uses `vite` for local development and production builds.
